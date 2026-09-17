@@ -37,8 +37,8 @@ const features = [
   },
   {
     icon: QrCode,
-    title: 'QR Lot Traceability',
-    text: 'Traceable custody from household doorstep collection to industrial smelter furnaces.',
+    title: 'QR Lot Verification',
+    text: 'Digitally verified custody from household doorstep collection to industrial smelter furnaces.',
   },
   {
     icon: Recycle,
@@ -76,7 +76,7 @@ export default function LandingHero() {
 
             <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-5xl">
               Transparent Doorstep Scrap.
-              <span className="block text-emerald-700">Traceable E-Waste Recycling.</span>
+              <span className="block text-emerald-700">Responsible E-Waste Recycling.</span>
             </h1>
 
             <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base max-w-xl">
@@ -159,7 +159,7 @@ export default function LandingHero() {
                 <div className="mt-4 grid grid-cols-2 gap-2.5 pt-3 border-t border-slate-100 text-xs">
                   <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-200/80">
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">Chain of Custody</span>
-                    <span className="font-semibold text-slate-900">Digital QR Tracking</span>
+                    <span className="font-semibold text-slate-900">Digital QR Verification</span>
                   </div>
                   <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-200/80">
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">Regulatory Standard</span>
@@ -253,7 +253,7 @@ export default function LandingHero() {
         </div>
       </section>
 
-      {/* 6-STEP TRACEABILITY JOURNEY */}
+      {/* 6-STEP OPERATIONAL FLOW */}
       <section className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-10 shadow-xs space-y-8">
         <div className="text-center max-w-xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 block">The Operational Flow</span>

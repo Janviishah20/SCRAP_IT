@@ -179,7 +179,7 @@ export default function CitizenDashboard() {
               {activeRequests.length} Scheduled
             </span>
           </div>
-          <span className="text-xs text-slate-500">Live order status and digital scale tracking</span>
+          <span className="text-xs text-slate-500">Live order status and digital scale updates</span>
         </div>
 
         {activeRequests.length === 0 ? (
