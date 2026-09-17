@@ -53,15 +53,15 @@ export default function KabadiwalaDashboard() {
     <div className="space-y-8 animate-fadeIn">
       
       {/* Collector Profile & Hub Banner */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+      <div className="bg-gradient-to-br from-white via-amber-50/25 to-emerald-50/25 border border-amber-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5" />
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100/80 text-amber-900 border border-amber-300 flex items-center gap-1.5 shadow-2xs">
+                <Truck className="w-3.5 h-3.5 text-amber-700" />
                 Aggregator Hub • {currentUser?.area || 'Local Collection Zone'}
               </span>
-              <span className="flex items-center gap-1 text-xs text-emerald-800 font-mono font-bold">
+              <span className="flex items-center gap-1 text-xs text-emerald-800 font-mono font-bold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
                 <Wifi className="w-3 h-3 text-emerald-700" />
                 IoT Scale #DS-44 Active
               </span>
@@ -77,20 +77,20 @@ export default function KabadiwalaDashboard() {
 
           {/* Quick Hub Stats */}
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[95px]">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">Rating</span>
+            <div className="p-3 bg-gradient-to-br from-amber-50 to-white rounded-2xl border border-amber-200/90 text-center min-w-[95px] shadow-2xs">
+              <span className="text-[10px] uppercase font-bold text-amber-800 block">Rating</span>
               <div className="flex items-center justify-center gap-1 mt-0.5">
                 <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                <span className="text-base font-bold text-slate-900">5.0</span>
+                <span className="text-base font-extrabold text-slate-900">5.0</span>
               </div>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[95px]">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">Pickups</span>
-              <span className="text-base font-bold text-emerald-800 block mt-0.5">{completedPickups.length}</span>
+            <div className="p-3 bg-gradient-to-br from-emerald-50 to-white rounded-2xl border border-emerald-200/90 text-center min-w-[95px] shadow-2xs">
+              <span className="text-[10px] uppercase font-bold text-emerald-800 block">Pickups</span>
+              <span className="text-base font-extrabold text-emerald-900 block mt-0.5">{completedPickups.length}</span>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[95px]">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">Vehicle</span>
-              <span className="text-xs font-bold text-slate-900 block mt-1">E-Loader</span>
+            <div className="p-3 bg-gradient-to-br from-sky-50 to-white rounded-2xl border border-sky-200/90 text-center min-w-[95px] shadow-2xs">
+              <span className="text-[10px] uppercase font-bold text-sky-800 block">Vehicle</span>
+              <span className="text-xs font-bold text-sky-950 block mt-1">E-Loader</span>
             </div>
           </div>
         </div>

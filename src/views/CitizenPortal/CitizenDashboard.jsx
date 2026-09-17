@@ -35,17 +35,17 @@ export default function CitizenDashboard() {
     <div className="space-y-8 animate-fadeIn">
       
       {/* Top Welcome & Impact Banner */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-white via-emerald-50/35 to-teal-50/25 border border-emerald-200/80 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100/90 text-emerald-900 border border-emerald-300 shadow-2xs">
                 Citizen Portal • {currentUser?.area || 'Noida Sector 78'}
               </span>
               <span className="text-xs text-slate-500 font-medium">Customer ID: #{currentUser?.id || 'CIT-01'}</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Welcome, {currentUser?.name || 'Citizen'}
+              Welcome, <span className="bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">{currentUser?.name || 'Citizen'}</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">
               Schedule doorstep scrap pickups with transparent market rates. Every item is weighed on a certified digital scale right before your eyes.
@@ -55,7 +55,7 @@ export default function CitizenDashboard() {
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <button
               onClick={() => setIsCreatePickupModalOpen(true)}
-              className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition flex items-center justify-center gap-2"
+              className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:brightness-110 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md shadow-emerald-700/25 transition flex items-center justify-center gap-2 active:scale-[0.98]"
             >
               <Plus className="w-4 h-4" />
               <span>Schedule Scrap Pickup</span>
@@ -63,10 +63,10 @@ export default function CitizenDashboard() {
 
             <button
               onClick={() => setShowAIEstimator(prev => !prev)}
-              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 border ${
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 border shadow-2xs active:scale-[0.98] ${
                 showAIEstimator 
                   ? 'bg-slate-900 text-white border-slate-900 shadow-xs' 
-                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300 shadow-xs'
+                  : 'bg-gradient-to-r from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 text-emerald-950 border-emerald-300'
               }`}
             >
               <Sparkles className="w-4 h-4 text-emerald-600" />
@@ -75,7 +75,7 @@ export default function CitizenDashboard() {
 
             <button
               onClick={() => setIsRateModalOpen(true)}
-              className="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2"
+              className="px-4 py-2.5 bg-white/90 hover:bg-slate-50 text-slate-800 border border-slate-300/90 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2 shadow-2xs"
             >
               <Scale className="w-4 h-4 text-emerald-700" />
               <span>Explore Rates</span>
@@ -83,44 +83,52 @@ export default function CitizenDashboard() {
           </div>
         </div>
 
-        {/* Eco Scorecard Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-100">
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-            <div className="flex items-center gap-2 text-emerald-800 mb-1">
-              <Coins className="w-4 h-4" />
+        {/* Eco Scorecard Grid (4 Distinct Colorful Theme Cards) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-emerald-100/90 relative z-10">
+          <div className="p-4 bg-gradient-to-br from-emerald-50/90 via-white to-emerald-100/40 rounded-2xl border border-emerald-200/90 shadow-2xs hover:shadow-xs transition">
+            <div className="flex items-center gap-2 text-emerald-800 mb-1.5">
+              <div className="p-1 rounded-md bg-emerald-100 text-emerald-700">
+                <Coins className="w-3.5 h-3.5" />
+              </div>
               <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Scrap Earnings</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 font-mono">
+            <span className="text-xl sm:text-2xl font-extrabold text-emerald-950 font-mono">
               Rs. {citizenStats.totalEarnedRs.toLocaleString('en-IN')}
             </span>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-            <div className="flex items-center gap-2 text-emerald-800 mb-1">
-              <Leaf className="w-4 h-4" />
+          <div className="p-4 bg-gradient-to-br from-teal-50/90 via-white to-teal-100/40 rounded-2xl border border-teal-200/90 shadow-2xs hover:shadow-xs transition">
+            <div className="flex items-center gap-2 text-teal-800 mb-1.5">
+              <div className="p-1 rounded-md bg-teal-100 text-teal-700">
+                <Leaf className="w-3.5 h-3.5" />
+              </div>
               <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">CO2 Offset</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-emerald-800 font-mono">
+            <span className="text-xl sm:text-2xl font-extrabold text-teal-950 font-mono">
               {citizenStats.co2SavedKg} <span className="text-xs">kg</span>
             </span>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-            <div className="flex items-center gap-2 text-slate-700 mb-1">
-              <Scale className="w-4 h-4" />
+          <div className="p-4 bg-gradient-to-br from-sky-50/90 via-white to-sky-100/40 rounded-2xl border border-sky-200/90 shadow-2xs hover:shadow-xs transition">
+            <div className="flex items-center gap-2 text-sky-800 mb-1.5">
+              <div className="p-1 rounded-md bg-sky-100 text-sky-700">
+                <Scale className="w-3.5 h-3.5" />
+              </div>
               <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Landfill Diverted</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 font-mono">
+            <span className="text-xl sm:text-2xl font-extrabold text-sky-950 font-mono">
               {citizenStats.landfillDivertedKg} <span className="text-xs">kg</span>
             </span>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80">
-            <div className="flex items-center gap-2 text-slate-700 mb-1">
-              <ShieldCheck className="w-4 h-4" />
+          <div className="p-4 bg-gradient-to-br from-amber-50/90 via-white to-amber-100/40 rounded-2xl border border-amber-200/90 shadow-2xs hover:shadow-xs transition">
+            <div className="flex items-center gap-2 text-amber-800 mb-1.5">
+              <div className="p-1 rounded-md bg-amber-100 text-amber-700">
+                <ShieldCheck className="w-3.5 h-3.5" />
+              </div>
               <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Green Coins Earned</span>
             </div>
-            <span className="text-xl sm:text-2xl font-bold text-slate-900 font-mono">
+            <span className="text-xl sm:text-2xl font-extrabold text-amber-950 font-mono">
               {citizenStats.greenCoins} <span className="text-xs">pts</span>
             </span>
           </div>

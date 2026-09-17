@@ -6,14 +6,15 @@ export default function Footer() {
   const { openAuth, setIsRateModalOpen, openLegalModal } = useApp();
 
   return (
-    <footer className="mt-20 border-t border-slate-200 bg-white text-slate-600 text-xs">
+    <footer className="mt-20 border-t border-emerald-100 bg-gradient-to-b from-white to-slate-100/90 text-slate-600 text-xs relative">
+      <div className="h-1 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           
           {/* Col 1: Brand & Purpose */}
           <div className="space-y-3 md:col-span-1">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold shadow-xs">
                 <Recycle className="w-4 h-4" />
               </div>
               <span className="text-base font-extrabold text-slate-900 tracking-tight">

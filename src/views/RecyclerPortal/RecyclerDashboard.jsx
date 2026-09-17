@@ -49,15 +49,15 @@ export default function RecyclerDashboard() {
     <div className="space-y-8 animate-fadeIn">
       
       {/* Recycler Profile & CPCB Accreditation Header */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+      <div className="bg-gradient-to-br from-white via-indigo-50/25 to-teal-50/25 border border-indigo-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
-                <Factory className="w-3.5 h-3.5" />
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-teal-100/80 text-teal-900 border border-teal-300 flex items-center gap-1.5 shadow-2xs">
+                <Factory className="w-3.5 h-3.5 text-teal-700" />
                 CPCB Registered Smelter & Refiner
               </span>
-              <span className="text-xs font-mono text-slate-500 font-medium">
+              <span className="text-xs font-mono text-slate-500 font-medium bg-slate-100/80 px-2.5 py-1 rounded-full border border-slate-200">
                 Reg: {currentUser?.cpcbRegistrationNo || 'CPCB/E-WASTE/REG/2024/9021'}
               </span>
             </div>
@@ -72,17 +72,17 @@ export default function RecyclerDashboard() {
 
           {/* Smelter Capacity Stats */}
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[100px]">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">Monthly Cap</span>
-              <span className="text-lg font-bold text-slate-900">{currentUser?.monthlyCapacityTons || 500} T</span>
+            <div className="p-3 bg-gradient-to-br from-sky-50 to-white rounded-2xl border border-sky-200/90 text-center min-w-[100px] shadow-2xs">
+              <span className="text-[10px] uppercase font-bold text-sky-800 block">Monthly Cap</span>
+              <span className="text-lg font-extrabold text-slate-900">{currentUser?.monthlyCapacityTons || 500} T</span>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[100px]">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">Lots Procured</span>
-              <span className="text-lg font-bold text-emerald-800">{purchasedLots.length}</span>
+            <div className="p-3 bg-gradient-to-br from-emerald-50 to-white rounded-2xl border border-emerald-200/90 text-center min-w-[100px] shadow-2xs">
+              <span className="text-[10px] uppercase font-bold text-emerald-800 block">Lots Procured</span>
+              <span className="text-lg font-extrabold text-emerald-900">{purchasedLots.length}</span>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[100px]">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">EPR Credits</span>
-              <span className="text-lg font-bold text-emerald-800">+{purchasedLots.reduce((acc, l) => acc + Math.round((l.totalWeightKg || 50) * 20), 0)}</span>
+            <div className="p-3 bg-gradient-to-br from-teal-50 to-white rounded-2xl border border-teal-200/90 text-center min-w-[100px] shadow-2xs">
+              <span className="text-[10px] uppercase font-bold text-teal-800 block">EPR Credits</span>
+              <span className="text-lg font-extrabold text-teal-900">+{purchasedLots.reduce((acc, l) => acc + Math.round((l.totalWeightKg || 50) * 20), 0)}</span>
             </div>
           </div>
         </div>

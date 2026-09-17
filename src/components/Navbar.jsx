@@ -56,8 +56,11 @@ export default function Navbar() {
         </div>
       )}
 
+      {/* Multi-tone Accent Line */}
+      <div className="h-1 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700"></div>
+
       {/* Solid Clean Header */}
-      <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-200 shadow-xs">
+      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-emerald-100/80 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             
@@ -66,7 +69,7 @@ export default function Navbar() {
               onClick={() => setCurrentView('landing')}
               className="flex items-center gap-3 cursor-pointer select-none"
             >
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-700 text-white shadow-xs">
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-sm shadow-emerald-700/25">
                 <Recycle className="w-5 h-5" />
               </div>
               <div>
@@ -80,30 +83,38 @@ export default function Navbar() {
             </div>
 
             {/* Middle Nav: Clean Universal Navigation Links */}
-            <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
+            <nav className="hidden md:flex items-center gap-2 text-xs font-semibold text-slate-600">
               <button 
                 onClick={() => setCurrentView('landing')} 
-                className={`transition-colors ${currentView === 'landing' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
+                className={`px-3 py-1.5 rounded-lg transition-all ${
+                  currentView === 'landing' 
+                    ? 'text-emerald-900 bg-emerald-50 border border-emerald-200/80 font-bold shadow-2xs' 
+                    : 'hover:text-emerald-800 hover:bg-slate-100/70'
+                }`}
               >
                 Overview
               </button>
               <button 
                 onClick={() => setIsRateModalOpen(true)} 
-                className="hover:text-emerald-800 transition-colors"
+                className="px-3 py-1.5 rounded-lg hover:text-emerald-800 hover:bg-slate-100/70 transition-all"
               >
                 Live Scrap Rates
               </button>
               {isAuthenticated && (
                 <button 
                   onClick={() => setCurrentView('portal')} 
-                  className={`transition-colors flex items-center gap-1.5 ${currentView === 'portal' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
+                  className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                    currentView === 'portal' 
+                      ? 'text-emerald-900 bg-emerald-50 border border-emerald-200/80 font-bold shadow-2xs' 
+                      : 'hover:text-emerald-800 hover:bg-slate-100/70'
+                  }`}
                 >
                   <span>My Portal Dashboard</span>
                 </button>
               )}
               <button 
                 onClick={() => openLegalModal('terms')} 
-                className="hover:text-emerald-800 transition-colors"
+                className="px-3 py-1.5 rounded-lg hover:text-emerald-800 hover:bg-slate-100/70 transition-all"
               >
                 CPCB Norms
               </button>
@@ -115,7 +126,7 @@ export default function Navbar() {
               {/* Scrap Rates button */}
               <button
                 onClick={() => setIsRateModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-200/80 bg-emerald-50/60 hover:bg-emerald-100/70 text-emerald-900 text-xs font-semibold transition shadow-2xs"
               >
                 <Scale className="w-4 h-4 text-emerald-700" />
                 <span className="hidden sm:inline">Check Rates</span>
@@ -199,7 +210,7 @@ export default function Navbar() {
                 /* Unauthenticated Sign In Button */
                 <button
                   onClick={() => openAuth('citizen')}
-                  className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl shadow-xs transition"
+                  className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl shadow-sm shadow-emerald-700/25 transition active:scale-[0.98]"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Login / Choose View</span>
