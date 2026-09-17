@@ -88,7 +88,7 @@ export default function LandingHero() {
 
             <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-5xl">
               Transparent Doorstep Scrap.
-              <span className="block bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 bg-clip-text text-transparent">Responsible E-Waste Recycling.</span>
+              <span className="block bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 bg-clip-text text-transparent">E-Waste Recycling.</span>
             </h1>
 
             <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base max-w-xl">
