@@ -165,11 +165,17 @@ export default function EstimatorView({ embedded = false, onClose = null }) {
       const formData = new FormData();
       formData.append('image', file);
 
-      // Attempt fetch to backend on port 8000
+      // Check if backend should be called (on localhost or if custom API url is provided)
+      const apiUrl = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8000/api/estimate' : null);
+
+      if (!apiUrl) {
+        throw new Error('Cloud environment: engaging client ML detection model');
+      }
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-      const response = await fetch('http://localhost:8000/api/estimate', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
         signal: controller.signal
