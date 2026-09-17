@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Recycle, 
@@ -12,10 +12,9 @@ import {
   ShieldCheck, 
   ArrowLeft,
   CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  Sparkles,
-  KeyRound
+  Building2,
+  MapPin,
+  Sparkles
 } from 'lucide-react';
 
 export default function AuthPortal() {
@@ -23,94 +22,103 @@ export default function AuthPortal() {
     authRole, 
     setAuthRole, 
     login, 
-    setCurrentView, 
-    allUsers 
+    setCurrentView,
+    customUserProfiles
   } = useApp();
 
-  const [customCredsOpen, setCustomCredsOpen] = useState(false);
-  const [emailOrPhone, setEmailOrPhone] = useState('');
+  const [selectedRole, setSelectedRole] = useState(authRole || 'citizen');
+  const [fullName, setFullName] = useState(customUserProfiles[selectedRole]?.name || '');
+  const [contact, setContact] = useState(customUserProfiles[selectedRole]?.phone || '');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [organization, setOrganization] = useState(
+    customUserProfiles[selectedRole]?.businessName || 
+    customUserProfiles[selectedRole]?.companyName || ''
+  );
+  const [location, setLocation] = useState('');
+  const [formError, setFormError] = useState('');
 
   const roles = [
     {
       id: 'citizen',
-      title: 'Citizen View',
-      category: 'Households & Communities',
+      title: 'Citizen',
+      tagline: 'Household & Office Scrap',
       icon: User,
-      description: 'Schedule doorstep scrap collections with calibrated digital scales, transparent rates, and instant UPI payment.',
-      profileName: 'Rahul Sharma',
-      location: 'Noida Sector 78',
-      features: [
-        'Doorstep scrap pickup scheduling',
-        'IoT digital scale weight guarantee',
-        'Direct UPI & Green Coin rewards'
-      ]
+      badge: 'Individual / Home',
+      fieldPrompt: 'Area / Landmark (e.g. Sector 78, Noida)'
     },
     {
       id: 'kabadiwala',
-      title: 'Collector Hub',
-      category: 'Kabadiwala Partner',
+      title: 'Kabadiwala Partner',
+      tagline: 'Collector Hub & Aggregator',
       icon: Truck,
-      description: 'Receive nearby pickup requests, record weights via calibrated scale, and aggregate materials into commercial B2B lots.',
-      profileName: 'Ramesh Kumar',
-      location: 'Okhla Phase 2 Aggregator Hub',
-      features: [
-        'Local pickup dispatch board',
-        'Bluetooth scale synchronization',
-        'Wholesale lot bundling for recyclers'
-      ]
+      badge: 'Aggregator Hub',
+      fieldPrompt: 'Scrap Yard / Business Name (e.g. Delhi Central Scrap Hub)'
     },
     {
       id: 'recycler',
-      title: 'Recycler Smelter',
-      category: 'Authorized Smelting Plant',
+      title: 'Industrial Recycler',
+      tagline: 'Smelter & Refinery Plant',
       icon: Factory,
-      description: 'Procure verified wholesale e-waste lots, inspect metal assay yields, and issue statutory CPCB EPR certificates.',
-      profileName: 'Vikramaditya Singhania',
-      location: 'Bharat Eco-Recyclers & Smelters',
-      features: [
-        'B2B scrap lot marketplace',
-        'Precious metal recovery tracking',
-        'Statutory CPCB EPR credit certificates'
-      ]
+      badge: 'CPCB Smelter',
+      fieldPrompt: 'Recycling Facility / Enterprise Name (e.g. EcoSmelt Refineries Ltd)'
     }
   ];
 
-  const handleRoleSelect = (roleId) => {
+  const handleRoleChange = (roleId) => {
+    setSelectedRole(roleId);
     setAuthRole(roleId);
-    if (roleId === 'citizen') {
-      setEmailOrPhone(allUsers.citizen.phone);
-      setPassword('citizen123');
-    } else if (roleId === 'kabadiwala') {
-      setEmailOrPhone(allUsers.kabadiwala.phone);
-      setPassword('partner123');
-    } else if (roleId === 'recycler') {
-      setEmailOrPhone(allUsers.recycler.email);
-      setPassword('smelter123');
+    setFormError('');
+    // Load previously saved real credentials for this role if any
+    const existing = customUserProfiles[roleId];
+    if (existing && existing.name) {
+      setFullName(existing.name);
+      setContact(existing.phone || existing.email || '');
+      setOrganization(existing.businessName || existing.companyName || '');
+    } else {
+      setFullName('');
+      setContact('');
+      setOrganization('');
     }
   };
 
-  React.useEffect(() => {
-    handleRoleSelect(authRole);
-  }, [authRole]);
-
-  const handleDirectEnter = (roleId) => {
-    login(roleId);
-  };
-
-  const handleFormSubmit = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
-    login(authRole, name || null);
+    setFormError('');
+
+    const trimmedName = fullName.trim();
+    if (!trimmedName) {
+      setFormError('Please enter your full name.');
+      return;
+    }
+
+    if (!contact.trim()) {
+      setFormError('Please enter your mobile phone number or email address.');
+      return;
+    }
+
+    if (!password.trim()) {
+      setFormError('Please enter a password.');
+      return;
+    }
+
+    // Login with the user's real name and credentials
+    login(selectedRole, {
+      name: trimmedName,
+      phone: contact.trim(),
+      email: contact.includes('@') ? contact.trim() : `${trimmedName.toLowerCase().replace(/\s+/g, '')}@connect.in`,
+      businessName: organization.trim() || `${trimmedName} Scrap Hub`,
+      companyName: organization.trim() || `${trimmedName} Eco-Recyclers Ltd`,
+      address: location.trim() || undefined
+    });
   };
 
-  const activeRoleData = roles.find(r => r.id === authRole) || roles[0];
+  const activeRoleConfig = roles.find(r => r.id === selectedRole) || roles[0];
 
   return (
     <div className="min-h-[85vh] flex flex-col justify-center py-6 sm:py-10 px-4 sm:px-6 lg:px-8 bg-slate-50">
       
       {/* Top back navigation */}
-      <div className="max-w-4xl w-full mx-auto mb-4">
+      <div className="max-w-md w-full mx-auto mb-4">
         <button
           onClick={() => setCurrentView('landing')}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
@@ -120,210 +128,170 @@ export default function AuthPortal() {
         </button>
       </div>
 
-      <div className="max-w-4xl w-full mx-auto space-y-6">
+      <div className="max-w-md w-full mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
         
-        {/* Page Header */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 text-center shadow-xs">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-700 text-white shadow-xs mb-3">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-700 text-white shadow-xs mb-1">
             <Recycle className="w-6 h-6" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-            Select Portal to Access
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            Sign In to Portal
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
-            Choose your stakeholder role to open your dedicated workspace. Each portal contains specialized tools for verified doorstep collection and circular e-waste management.
+          <p className="text-xs text-slate-500 max-w-xs mx-auto">
+            Enter your real name and login details to access your verified portal workspace.
           </p>
         </div>
 
-        {/* 3 Interactive Role Selection Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-          {roles.map((role) => {
-            const Icon = role.icon;
-            const isSelected = authRole === role.id;
+        {/* 1. SELECT ROLE TABS */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+            Select Your Role Workspace:
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {roles.map((r) => {
+              const Icon = r.icon;
+              const isSelected = selectedRole === r.id;
 
-            return (
-              <div
-                key={role.id}
-                onClick={() => handleRoleSelect(role.id)}
-                className={`cursor-pointer rounded-2xl p-5 sm:p-6 border transition flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-white border-2 border-emerald-700 shadow-sm ring-2 ring-emerald-700/10'
-                    : 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
-                }`}
-              >
-                <div className="space-y-4">
-                  {/* Top card header */}
-                  <div className="flex items-start justify-between gap-3">
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                      isSelected ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-700'
-                    }`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    {isSelected ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Selected
-                      </span>
-                    ) : (
-                      <span className="text-[11px] text-slate-400 font-medium">Click to select</span>
-                    )}
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">
-                      {role.category}
-                    </span>
-                    <h2 className="text-lg font-extrabold text-slate-900">
-                      {role.title}
-                    </h2>
-                    <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
-                      {role.description}
-                    </p>
-                  </div>
-
-                  {/* Bullet Highlights */}
-                  <div className="space-y-1.5 pt-3 border-t border-slate-100">
-                    {role.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-[11px] text-slate-700">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 shrink-0" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Demo Profile Details */}
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-[11px]">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      Verified Account
-                    </span>
-                    <span className="font-bold text-slate-800 block truncate">
-                      {role.profileName}
-                    </span>
-                    <span className="text-slate-500 text-[10px] block truncate">
-                      {role.location}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Direct Action Button */}
-                <div className="pt-5 mt-auto">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDirectEnter(role.id);
-                    }}
-                    className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
-                      isSelected
-                        ? 'bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
-                    }`}
-                  >
-                    <span>Enter {role.title}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              return (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => handleRoleChange(r.id)}
+                  className={`p-3 rounded-xl border text-center transition flex flex-col items-center justify-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-emerald-50 border-2 border-emerald-700 text-emerald-900 shadow-2xs font-bold'
+                      : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-600 font-medium'
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 ${isSelected ? 'text-emerald-700' : 'text-slate-500'}`} />
+                  <span className="text-xs block leading-tight">{r.title}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="text-[11px] text-slate-500 text-center pt-1">
+            Active: <strong className="text-emerald-800">{activeRoleConfig.tagline}</strong>
+          </div>
         </div>
 
-        {/* Selected Role Action Panel */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
-                Ready to Access
-              </span>
-              <h3 className="text-lg font-bold text-slate-900">
-                {activeRoleData.title} Workspace
-              </h3>
-              <p className="text-xs text-slate-500">
-                Logged in as <span className="font-semibold text-slate-800">{activeRoleData.profileName}</span> ({activeRoleData.location})
-              </p>
+        {/* 2. REAL LOGIN FORM */}
+        <form onSubmit={handleSignIn} className="space-y-4">
+          
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0"></span>
+              <span>{formError}</span>
             </div>
+          )}
 
-            <button
-              onClick={() => handleDirectEnter(authRole)}
-              className="w-full sm:w-auto px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition flex items-center justify-center gap-2"
-            >
-              <span>Continue to {activeRoleData.title}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          {/* Full Real Name */}
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-slate-700 block">
+              Your Full Real Name <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                required
+                placeholder="Enter your real name (e.g. Niyam Jain)"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-700"
+              />
+            </div>
+            <span className="text-[10px] text-slate-400 block">
+              This name will appear on your doorstep weigh receipts and account records.
+            </span>
           </div>
 
-          {/* Optional: Custom Credentials Drawer */}
-          <div>
-            <button
-              type="button"
-              onClick={() => setCustomCredsOpen(!customCredsOpen)}
-              className="flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 transition"
-            >
-              <KeyRound className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Or sign in with custom credentials</span>
-              {customCredsOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            </button>
-
-            {customCredsOpen && (
-              <form onSubmit={handleFormSubmit} className="mt-4 pt-4 border-t border-slate-100 space-y-3 max-w-md">
-                <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Custom Account Name
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    placeholder={`e.g. ${activeRoleData.profileName}`}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-700"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Phone / Email
-                  </label>
-                  <input
-                    type="text"
-                    value={emailOrPhone}
-                    onChange={e => setEmailOrPhone(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-700"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Password / PIN
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-700"
-                  />
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition"
-                  >
-                    Sign In with Custom Details
-                  </button>
-                </div>
-              </form>
-            )}
+          {/* Mobile / Email */}
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-slate-700 block">
+              Mobile Number or Email <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                required
+                placeholder="e.g. +91 98765 43210 or yourname@gmail.com"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-700"
+              />
+            </div>
           </div>
 
-          {/* Regulatory notice */}
-          <div className="flex items-center gap-2 text-[11px] text-slate-500 pt-3 border-t border-slate-100">
-            <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-            <span>DPDP Act 2023 compliant. Digital scales verified under Legal Metrology & CPCB E-Waste Rules 2022.</span>
+          {/* Password */}
+          <div className="space-y-1">
+            <label className="text-xs font-bold text-slate-700 block">
+              Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="password"
+                required
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-700"
+              />
+            </div>
           </div>
+
+          {/* Role-specific optional field */}
+          {selectedRole !== 'citizen' ? (
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 block">
+                {selectedRole === 'kabadiwala' ? 'Aggregator Scrap Hub / Business Name' : 'Smelter / Company Legal Name'}
+              </label>
+              <input
+                type="text"
+                placeholder={selectedRole === 'kabadiwala' ? 'e.g. Okhla Green Scrap Aggregators' : 'e.g. Bharat Eco-Refineries Ltd'}
+                value={organization}
+                onChange={(e) => setOrganization(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-700"
+              />
+            </div>
+          ) : (
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 block">
+                Residential Location / Sector (Optional)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Sector 78, Noida / Vasant Kunj, Delhi"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-emerald-700"
+              />
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xs transition flex items-center justify-center gap-2 mt-2"
+          >
+            <span>Sign In to {activeRoleConfig.title} Portal</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+
+        </form>
+
+        {/* Security & Compliance Footer */}
+        <div className="pt-4 border-t border-slate-100 text-center space-y-1">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 font-medium">
+            <ShieldCheck className="w-4 h-4 text-emerald-700" />
+            <span>DPDP Act 2023 Compliant • 256-Bit Encrypted Session</span>
+          </div>
+          <p className="text-[10px] text-slate-400">
+            Certified by Central Pollution Control Board (CPCB) E-Waste Rules 2022.
+          </p>
         </div>
 
       </div>
+
     </div>
   );
 }

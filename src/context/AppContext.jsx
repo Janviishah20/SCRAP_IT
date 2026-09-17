@@ -148,11 +148,34 @@ export function AppProvider({ children }) {
     }, 4000);
   };
 
+  // Real user custom profiles entered during login (replaces fake pre-filled AI names)
+  const [customUserProfiles, setCustomUserProfiles] = useState(() => {
+    return safeStorage.getJSON('kc_user_profiles', {});
+  });
+
+  useEffect(() => {
+    safeStorage.setJSON('kc_user_profiles', customUserProfiles);
+  }, [customUserProfiles]);
+
+  // Compute active user from base role + custom real credentials
+  const baseUser = MOCK_USERS[currentRole] || MOCK_USERS.citizen;
+  const roleCustom = customUserProfiles[currentRole] || {};
+  const activeUser = {
+    ...baseUser,
+    ...roleCustom,
+    name: roleCustom.name || baseUser.name,
+    businessName: roleCustom.businessName || baseUser.businessName || `${roleCustom.name || baseUser.name} Scrap Hub`,
+    companyName: roleCustom.companyName || baseUser.companyName || `${roleCustom.name || baseUser.name} Eco Recyclers`,
+    phone: roleCustom.phone || baseUser.phone,
+    email: roleCustom.email || baseUser.email
+  };
+
   // Switch Active Stakeholder Role
   const switchRole = (newRole) => {
     setCurrentRole(newRole);
     setCurrentView('portal');
-    showToast(`Switched view to ${MOCK_USERS[newRole].roleTitle}`);
+    const targetName = customUserProfiles[newRole]?.name || MOCK_USERS[newRole].name;
+    showToast(`Switched workspace to ${MOCK_USERS[newRole].roleTitle} (${targetName})`);
   };
 
   // Open Auth Page directly with a specific role
@@ -161,12 +184,32 @@ export function AppProvider({ children }) {
     setCurrentView('auth');
   };
 
-  // Login simulation
-  const login = (role) => {
+  // Real Login with custom real credentials
+  const login = (role, credentials = null) => {
     setIsAuthenticated(true);
     setCurrentRole(role);
+
+    let resolvedName = customUserProfiles[role]?.name || MOCK_USERS[role]?.name || 'User';
+
+    if (credentials && credentials.name && credentials.name.trim()) {
+      resolvedName = credentials.name.trim();
+      const updatedProfiles = {
+        ...customUserProfiles,
+        [role]: {
+          ...(customUserProfiles[role] || {}),
+          name: resolvedName,
+          phone: credentials.phone || credentials.emailOrPhone || '',
+          email: credentials.email || credentials.emailOrPhone || '',
+          businessName: credentials.businessName || `${resolvedName} Scrap Solutions`,
+          companyName: credentials.companyName || `${resolvedName} Smelters Ltd`
+        }
+      };
+      setCustomUserProfiles(updatedProfiles);
+      safeStorage.setJSON('kc_user_profiles', updatedProfiles);
+    }
+
     setCurrentView('portal');
-    showToast(`Welcome back, ${MOCK_USERS[role].name}!`, 'success');
+    showToast(`Welcome back, ${resolvedName}!`, 'success');
   };
 
   // Logout simulation
@@ -489,7 +532,8 @@ export function AppProvider({ children }) {
       openAuth,
       login,
       logout,
-      currentUser: MOCK_USERS[currentRole] || MOCK_USERS.citizen,
+      currentUser: activeUser,
+      customUserProfiles,
       allUsers: MOCK_USERS,
       categories: SCRAP_CATEGORIES,
       pickupRequests,

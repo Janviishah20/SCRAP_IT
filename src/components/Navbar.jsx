@@ -93,19 +93,22 @@ export default function Navbar() {
               >
                 Live Scrap Rates
               </button>
-              <button 
-                onClick={() => setCurrentView('estimator')} 
-                className={`transition-colors flex items-center gap-1.5 ${currentView === 'estimator' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
-                <span>AI Estimator</span>
-              </button>
-              <button 
-                onClick={() => openAuth(currentRole || 'citizen')} 
-                className={`transition-colors flex items-center gap-1.5 ${currentView === 'auth' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
-              >
-                <span>Select Portal</span>
-              </button>
+              {isAuthenticated ? (
+                <button 
+                  onClick={() => setCurrentView('portal')} 
+                  className={`transition-colors flex items-center gap-1.5 ${currentView === 'portal' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
+                >
+                  <span>My Portal Dashboard</span>
+                </button>
+              ) : (
+                <button 
+                  onClick={() => openAuth('citizen')} 
+                  className={`transition-colors flex items-center gap-1.5 ${currentView === 'auth' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
+                >
+                  <LogIn className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Sign In</span>
+                </button>
+              )}
               <button 
                 onClick={() => openLegalModal('terms')} 
                 className="hover:text-emerald-800 transition-colors"
@@ -242,20 +245,10 @@ export default function Navbar() {
                   <Scale className="w-3.5 h-3.5 text-emerald-700" />
                 </button>
                 <button
-                  onClick={() => { setCurrentView('estimator'); setMobileMenuOpen(false); }}
-                  className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between font-bold ${currentView === 'estimator' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'}`}
-                >
-                  <span className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>AI Scrap Estimator</span>
-                  </span>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-mono">NEW</span>
-                </button>
-                <button
                   onClick={() => { openAuth(currentRole || 'citizen'); setMobileMenuOpen(false); }}
                   className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between font-bold"
                 >
-                  <span>Select Portal Workspace</span>
+                  <span>Sign In / Switch Portal</span>
                   <LogIn className="w-3.5 h-3.5 text-emerald-700" />
                 </button>
                 <button

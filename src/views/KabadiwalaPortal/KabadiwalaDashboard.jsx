@@ -42,7 +42,12 @@ export default function KabadiwalaDashboard() {
   });
 
   const activePickups = pickupRequests.filter(r => r.status === 'accepted');
-  const myLots = recyclerLots.filter(l => l.kabadiwalaId === currentUser?.id || l.kabadiwalaName?.includes('Ramesh'));
+  const myLots = recyclerLots.filter(l => 
+    l.kabadiwalaId === currentUser?.id || 
+    (currentUser?.name && l.kabadiwalaName?.toLowerCase().includes(currentUser.name.toLowerCase())) ||
+    (currentUser?.businessName && l.kabadiwalaName?.toLowerCase().includes(currentUser.businessName.toLowerCase())) ||
+    l.kabadiwalaName?.includes('Ramesh')
+  );
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -54,7 +59,7 @@ export default function KabadiwalaDashboard() {
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5" />
-                Aggregator Hub • Okhla Industrial Area
+                Aggregator Hub • {currentUser?.area || 'Okhla Industrial Area'}
               </span>
               <span className="flex items-center gap-1 text-xs text-emerald-800 font-mono font-bold">
                 <Wifi className="w-3 h-3 text-emerald-700" />
@@ -63,7 +68,7 @@ export default function KabadiwalaDashboard() {
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {currentUser?.businessName || 'Ramesh Scrap Aggregators'}
+              {currentUser?.businessName || currentUser?.name || 'Collector Aggregator Hub'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">
               Accept verified doorstep pickup requests, review scrap photos for vehicle sizing, weigh items with certified IoT scales, and package e-waste lots for industrial smelters.

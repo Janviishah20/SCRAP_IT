@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import VehicleRecommendationBadge from '../../components/VehicleRecommendationBadge';
 import EmptyState from '../../components/EmptyState';
+import EstimatorView from '../EstimatorView';
 import { 
   Plus, 
   MapPin, 
@@ -11,7 +12,9 @@ import {
   Coins, 
   ShieldCheck, 
   Clock,
-  PhoneCall
+  PhoneCall,
+  Sparkles,
+  Camera
 } from 'lucide-react';
 
 export default function CitizenDashboard() {
@@ -22,6 +25,8 @@ export default function CitizenDashboard() {
     setIsCreatePickupModalOpen, 
     setIsRateModalOpen 
   } = useApp();
+
+  const [showAIEstimator, setShowAIEstimator] = useState(false);
 
   const activeRequests = pickupRequests.filter(r => r.status !== 'completed');
   const completedRequests = pickupRequests.filter(r => r.status === 'completed');
@@ -35,12 +40,12 @@ export default function CitizenDashboard() {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                Citizen Portal • Noida Sector 78
+                Citizen Portal • {currentUser?.area || 'Noida Sector 78'}
               </span>
-              <span className="text-xs text-slate-500 font-medium">Customer ID: #CIT-01</span>
+              <span className="text-xs text-slate-500 font-medium">Customer ID: #{currentUser?.id || 'CIT-01'}</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Welcome, {currentUser?.name || 'Rahul'}
+              Welcome, {currentUser?.name || 'Citizen'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">
               Schedule doorstep scrap pickups with transparent market rates. Every item is weighed on a certified digital scale right before your eyes.
@@ -54,6 +59,18 @@ export default function CitizenDashboard() {
             >
               <Plus className="w-4 h-4" />
               <span>Schedule Scrap Pickup</span>
+            </button>
+
+            <button
+              onClick={() => setShowAIEstimator(prev => !prev)}
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 border ${
+                showAIEstimator 
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-xs' 
+                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300 shadow-xs'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <span>{showAIEstimator ? 'Hide AI Scanner' : 'AI E-Waste Scanner'}</span>
             </button>
 
             <button
@@ -109,6 +126,49 @@ export default function CitizenDashboard() {
           </div>
         </div>
       </div>
+
+      {/* AI E-Waste Scanner Section for Citizens */}
+      {showAIEstimator ? (
+        <div className="bg-white border border-emerald-300 rounded-2xl p-4 sm:p-6 shadow-xs animate-fadeIn">
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                Live AI E-Waste Weight & Payout Estimator
+              </h2>
+            </div>
+            <button
+              onClick={() => setShowAIEstimator(false)}
+              className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition"
+            >
+              Close Scanner
+            </button>
+          </div>
+          <EstimatorView embedded={true} onClose={() => setShowAIEstimator(false)} />
+        </div>
+      ) : (
+        <div className="bg-gradient-to-r from-emerald-900 via-slate-900 to-slate-900 rounded-2xl p-6 sm:p-7 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xs border border-emerald-800/50">
+          <div className="space-y-1.5 max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <Sparkles className="w-3.5 h-3.5" />
+              Citizen AI Feature • Multi-Scale YOLOv8
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+              Have old electronics? Scan them to know their scrap value
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Use your device camera or upload a photo. Our AI computer vision model identifies electronics in scrap piles, calculates total weight, provides an instant payout quote, and plays Hindi audio guidance.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowAIEstimator(true)}
+            className="px-5 py-3 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-xs sm:text-sm rounded-xl transition flex items-center justify-center gap-2.5 shrink-0 shadow-sm"
+          >
+            <Camera className="w-4 h-4" />
+            <span>Launch AI Camera Scanner</span>
+          </button>
+        </div>
+      )}
 
       {/* Active Pickups Tracking Section */}
       <div className="space-y-4">
