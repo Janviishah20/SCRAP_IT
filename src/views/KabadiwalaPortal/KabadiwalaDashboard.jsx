@@ -264,7 +264,7 @@ export default function KabadiwalaDashboard() {
                     className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-1.5"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>Accept Job & Take Vehicle</span>
+                    <span>Accept Job</span>
                   </button>
                 </div>
 
