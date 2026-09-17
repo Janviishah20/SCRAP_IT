@@ -11,6 +11,7 @@ import {
   Recycle,
   QrCode,
   MapPin,
+  Sparkles,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -47,7 +48,7 @@ const features = [
 ];
 
 export default function LandingHero() {
-  const { openAuth, setIsRateModalOpen, isAuthenticated, currentRole, setIsCreatePickupModalOpen } = useApp();
+  const { openAuth, setIsRateModalOpen, isAuthenticated, currentRole, setIsCreatePickupModalOpen, setCurrentView } = useApp();
 
   const enter = (role) => {
     openAuth(role);
@@ -89,6 +90,14 @@ export default function LandingHero() {
               >
                 <span>Schedule Scrap Pickup</span>
                 <ArrowRight className="h-4 w-4" />
+              </button>
+
+              <button
+                onClick={() => setCurrentView('estimator')}
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-5 py-3 text-xs sm:text-sm font-bold text-emerald-900 transition hover:bg-emerald-100 shadow-2xs"
+              >
+                <Sparkles className="h-4 w-4 text-emerald-700" />
+                <span>AI E-Waste Estimator</span>
               </button>
 
               <button

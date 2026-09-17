@@ -11,6 +11,7 @@ import CitizenDashboard from './views/CitizenPortal/CitizenDashboard';
 import KabadiwalaDashboard from './views/KabadiwalaPortal/KabadiwalaDashboard';
 import RecyclerDashboard from './views/RecyclerPortal/RecyclerDashboard';
 import NotFoundView from './views/NotFoundView';
+import EstimatorView from './views/EstimatorView';
 
 // Modals
 import RateCardModal from './components/RateCardModal';
@@ -41,6 +42,8 @@ function MainLayout() {
           <AuthPortal />
         ) : currentView === 'landing' ? (
           <LandingHero />
+        ) : currentView === 'estimator' ? (
+          <EstimatorView />
         ) : currentView === 'not_found' ? (
           <NotFoundView />
         ) : (

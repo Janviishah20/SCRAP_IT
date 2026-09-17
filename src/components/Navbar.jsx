@@ -15,7 +15,8 @@ import {
   Info,
   ShieldCheck,
   FileText,
-  LogIn
+  LogIn,
+  Sparkles
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -91,6 +92,13 @@ export default function Navbar() {
                 className="hover:text-emerald-800 transition-colors"
               >
                 Live Scrap Rates
+              </button>
+              <button 
+                onClick={() => setCurrentView('estimator')} 
+                className={`transition-colors flex items-center gap-1.5 ${currentView === 'estimator' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                <span>AI Estimator</span>
               </button>
               <button 
                 onClick={() => openAuth(currentRole || 'citizen')} 
@@ -232,6 +240,16 @@ export default function Navbar() {
                 >
                   <span>Daily Rate Index</span>
                   <Scale className="w-3.5 h-3.5 text-emerald-700" />
+                </button>
+                <button
+                  onClick={() => { setCurrentView('estimator'); setMobileMenuOpen(false); }}
+                  className={`w-full text-left py-2 px-3 rounded-lg flex items-center justify-between font-bold ${currentView === 'estimator' ? 'bg-emerald-50 text-emerald-800' : 'text-slate-700 hover:bg-slate-50'}`}
+                >
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>AI Scrap Estimator</span>
+                  </span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-mono">NEW</span>
                 </button>
                 <button
                   onClick={() => { openAuth(currentRole || 'citizen'); setMobileMenuOpen(false); }}

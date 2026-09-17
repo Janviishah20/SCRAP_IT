@@ -10,9 +10,9 @@ import { safeStorage } from '../utils/storage';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  // Navigation view: 'portal' | 'auth' | 'landing' | 'not_found'
+  // Navigation view: 'portal' | 'auth' | 'landing' | 'not_found' | 'estimator'
   const [currentView, setCurrentView] = useState(() => {
-    const validViews = ['portal', 'auth', 'landing', 'not_found'];
+    const validViews = ['portal', 'auth', 'landing', 'not_found', 'estimator'];
     const saved = safeStorage.getItem('kc_view');
     // Default to 'landing' so the landing page is the first page seen
     return validViews.includes(saved) ? saved : 'landing';
@@ -124,6 +124,8 @@ export function AppProvider({ children }) {
   useEffect(() => {
     if (currentView === 'landing') {
       document.title = 'Kabadiwala Connect | Verified Doorstep Scrap & Circular E-Waste Platform';
+    } else if (currentView === 'estimator') {
+      document.title = 'AI E-Waste Weight & Payout Estimator | Kabadiwala Connect';
     } else if (currentView === 'auth') {
       document.title = 'Sign In | Kabadiwala Connect';
     } else if (currentView === 'not_found') {
