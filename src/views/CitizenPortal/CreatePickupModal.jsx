@@ -21,24 +21,20 @@ export default function CreatePickupModal() {
   } = useApp();
 
   // Selected items list
-  const [selectedItems, setSelectedItems] = useState([
-    { itemId: 'ew_laptop', name: 'Old Laptops / Notebooks', qty: 1, unit: 'unit', rate: 480, estWeight: 2.5 },
-    { itemId: 'ew_cpu', name: 'Desktop CPU Tower / Server', qty: 1, unit: 'unit', rate: 380, estWeight: 7.0 },
-    { itemId: 'ew_wires', name: 'Copper Cables & Insulated Wires', qty: 3, unit: 'kg', rate: 290, estWeight: 3.0 }
-  ]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   // Form states
-  const [address, setAddress] = useState(currentUser?.address || 'Flat 402, Lotus Greens, Sector 78, Noida');
-  const [landmark, setLandmark] = useState('Near Mahagun Mart');
-  const [pincode, setPincode] = useState('201305');
-  const [phone, setPhone] = useState(currentUser?.phone || '+91 98101 23456');
+  const [address, setAddress] = useState(currentUser?.address || '');
+  const [landmark, setLandmark] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [phone, setPhone] = useState(currentUser?.phone || '');
   const [preferredSlot, setPreferredSlot] = useState('Today (Within 2 hours)');
-  const [notes, setNotes] = useState('Please bring digital scale for cable weighing.');
+  const [notes, setNotes] = useState('');
   const [hasConsent, setHasConsent] = useState(true);
   const [formError, setFormError] = useState('');
 
   // Photo upload state
-  const [photoPreview, setPhotoPreview] = useState('https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=600&q=80');
+  const [photoPreview, setPhotoPreview] = useState(null);
 
   // Sample quick images
   const demoImages = [
@@ -109,7 +105,7 @@ export default function CreatePickupModal() {
     }
 
     createPickupRequest({
-      citizenName: currentUser?.name || 'Rahul Sharma',
+      citizenName: currentUser?.name || 'Citizen',
       citizenPhone: phone,
       address,
       landmark,
@@ -272,11 +268,17 @@ export default function CreatePickupModal() {
 
               {/* Photo Preview & Vehicle Advice */}
               <div className="space-y-2">
-                <div className="h-28 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 relative">
-                  <img src={photoPreview} alt="Scrap preview" className="w-full h-full object-cover" />
-                  <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] px-1.5 py-0.5 rounded">
-                    Verified Pile
-                  </span>
+                <div className="h-28 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 relative flex items-center justify-center text-center p-2">
+                  {photoPreview ? (
+                    <>
+                      <img src={photoPreview} alt="Scrap preview" className="w-full h-full object-cover" />
+                      <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] px-1.5 py-0.5 rounded">
+                        Scrap Photo
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xs text-slate-400 font-medium">No photo uploaded yet</span>
+                  )}
                 </div>
 
                 <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1">

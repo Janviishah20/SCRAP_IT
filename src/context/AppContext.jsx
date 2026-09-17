@@ -35,38 +35,49 @@ export function AppProvider({ children }) {
 
   // Requests state
   const [pickupRequests, setPickupRequests] = useState(() => {
-    const saved = safeStorage.getJSON('kc_pickups', INITIAL_PICKUP_REQUESTS);
-    return Array.isArray(saved) && saved.length > 0 ? saved : INITIAL_PICKUP_REQUESTS;
+    const saved = safeStorage.getJSON('kc_pickups', []);
+    if (Array.isArray(saved) && saved.some(r => r.id === 'REQ-901' || r.id === 'REQ-902' || r.id === 'REQ-900')) {
+      safeStorage.setJSON('kc_pickups', []);
+      return [];
+    }
+    return Array.isArray(saved) ? saved : [];
   });
 
   // Lots state
   const [recyclerLots, setRecyclerLots] = useState(() => {
-    const saved = safeStorage.getJSON('kc_lots', INITIAL_RECYCLER_LOTS);
-    return Array.isArray(saved) && saved.length > 0 ? saved : INITIAL_RECYCLER_LOTS;
+    const saved = safeStorage.getJSON('kc_lots', []);
+    if (Array.isArray(saved) && saved.some(l => l.id === 'LOT-EW-401' || l.id === 'LOT-EW-402' || l.id === 'LOT-EW-403')) {
+      safeStorage.setJSON('kc_lots', []);
+      return [];
+    }
+    return Array.isArray(saved) ? saved : [];
   });
 
-  // Citizen metrics state
+  // Citizen metrics state (starts at 0, computed dynamically from actual pickups)
   const [citizenStats, setCitizenStats] = useState(() => {
     const defaultStats = {
-      greenCoins: 420,
-      co2SavedKg: 58.4,
-      treesEquivalent: 2.9,
-      landfillDivertedKg: 124.0,
-      totalEarnedRs: 12850
+      greenCoins: 0,
+      co2SavedKg: 0,
+      treesEquivalent: 0,
+      landfillDivertedKg: 0,
+      totalEarnedRs: 0
     };
     const saved = safeStorage.getJSON('kc_citizen_stats', defaultStats);
+    if (saved && (saved.totalEarnedRs === 12850 || saved.greenCoins === 420)) {
+      safeStorage.setJSON('kc_citizen_stats', defaultStats);
+      return defaultStats;
+    }
     return (saved && typeof saved === 'object' && saved.greenCoins !== undefined) ? saved : defaultStats;
   });
 
   // Kabadiwala local unbundled inventory (from completed pickups)
   const [kabadiwalaInventory, setKabadiwalaInventory] = useState(() => {
-    const defaultInv = [
-      { id: 'inv-1', title: 'Collected Server PCBs & Telecom Boards', weightKg: 45, estValue: 17500, category: 'PCBs' },
-      { id: 'inv-2', title: 'Mixed Heavy Copper Motors & AC Coils', weightKg: 30, estValue: 15300, category: 'Copper' },
-      { id: 'inv-3', title: 'Lithium & Lead-Acid Cells (Intact)', weightKg: 80, estValue: 6560, category: 'Batteries' },
-    ];
-    const saved = safeStorage.getJSON('kc_kabadiwala_inv', defaultInv);
-    return Array.isArray(saved) ? saved : defaultInv;
+    const saved = safeStorage.getJSON('kc_kabadiwala_inv', []);
+    if (Array.isArray(saved) && saved.some(i => i.id === 'inv-1' || i.id === 'inv-2' || i.id === 'inv-3')) {
+      safeStorage.setJSON('kc_kabadiwala_inv', []);
+      return [];
+    }
+    return Array.isArray(saved) ? saved : [];
   });
 
   // Modals state
@@ -254,15 +265,15 @@ export function AppProvider({ children }) {
 
     const newRequest = {
       id: newId,
-      citizenId: 'CIT-01',
-      citizenName: MOCK_USERS.citizen.name,
-      citizenPhone: pickupData.phone || MOCK_USERS.citizen.phone,
-      address: pickupData.address,
-      landmark: pickupData.landmark,
-      pincode: pickupData.pincode,
+      citizenId: activeUser?.id || 'CIT-01',
+      citizenName: activeUser?.name || pickupData.citizenName || 'Citizen',
+      citizenPhone: pickupData.phone || activeUser?.phone || '',
+      address: pickupData.address || activeUser?.address || '',
+      landmark: pickupData.landmark || '',
+      pincode: pickupData.pincode || '',
       locationCoords: { lat: 28.5355, lng: 77.3910 },
       distanceKm: parseFloat((0.8 + Math.random() * 2.5).toFixed(1)),
-      preferredSlot: pickupData.preferredSlot || 'Tomorrow, 10:00 AM - 1:00 PM',
+      preferredSlot: pickupData.preferredSlot || 'Today (Within 2 hours)',
       createdAt: 'Just now',
       status: 'pending',
       wasteType: pickupData.wasteType || 'E-Waste & Electronics',
@@ -270,11 +281,11 @@ export function AppProvider({ children }) {
       estimatedTotalWeightKg: weightEst,
       estimatedPayout: payoutEst,
       vehicleRecommended: vehicleInfo.label,
-      photoUrl: pickupData.photoUrl || 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=600&q=80',
-      notes: pickupData.notes || 'Please call 15 minutes before arrival.'
+      photoUrl: pickupData.photoUrl || null,
+      notes: pickupData.notes || ''
     };
 
-    setPickupRequests([newRequest, ...pickupRequests]);
+    setPickupRequests(prev => [newRequest, ...prev]);
     showToast(`Pickup request ${newId} scheduled successfully!`, 'success');
     setIsCreatePickupModalOpen(false);
   };
@@ -286,9 +297,9 @@ export function AppProvider({ children }) {
         return {
           ...req,
           status: 'accepted',
-          assignedKabadiwalaId: MOCK_USERS.kabadiwala.id,
-          assignedKabadiwalaName: MOCK_USERS.kabadiwala.businessName,
-          assignedKabadiwalaPhone: MOCK_USERS.kabadiwala.phone
+          assignedKabadiwalaId: activeUser?.id || 'KAB-01',
+          assignedKabadiwalaName: activeUser?.businessName || activeUser?.name || 'Collector Partner',
+          assignedKabadiwalaPhone: activeUser?.phone || '+91 98210 99881'
         };
       }
       return req;
@@ -351,32 +362,32 @@ export function AppProvider({ children }) {
 
     const newLot = {
       id: lotId,
-      lotTitle: lotData.lotTitle || `Batch #${lotId}: High-Yield Electronics`,
-      kabadiwalaId: MOCK_USERS.kabadiwala.id,
-      kabadiwalaName: MOCK_USERS.kabadiwala.businessName,
-      kabadiwalaPhone: MOCK_USERS.kabadiwala.phone,
-      location: lotData.location || MOCK_USERS.kabadiwala.hubAddress,
+      lotTitle: lotData.lotTitle || `Batch #${lotId}: Sorted E-Waste Lot`,
+      kabadiwalaId: activeUser?.id || 'KAB-01',
+      kabadiwalaName: activeUser?.businessName || activeUser?.name || 'Collector Aggregator Hub',
+      kabadiwalaPhone: activeUser?.phone || '+91 98210 99881',
+      location: lotData.location || activeUser?.hubAddress || activeUser?.area || 'Local Aggregator Yard',
       distanceKm: parseFloat((2.5 + Math.random() * 6).toFixed(1)),
       category: lotData.category || 'High-Grade PCBs',
       totalWeightKg: weight,
       askingRatePerKg: rate,
       totalLotPrice: weight * rate,
-      purityGrade: lotData.purityGrade || 'Grade A (Telecom/Server Motherboards)',
+      purityGrade: lotData.purityGrade || 'Grade A',
       estimatedYield: {
         copperPercent: 18,
         goldGramsPerTon: 140,
         plasticsPercent: 32,
         hazardousFreeCert: 'Verified Non-Toxic Dismantled'
       },
-      photoUrl: lotData.photoUrl || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+      photoUrl: lotData.photoUrl || null,
       status: 'available',
       bids: [],
       createdAt: 'Just now',
       eprEligible: true,
-      description: lotData.description || 'Segregated, verified e-waste ready for smelter / industrial refinery.'
+      description: lotData.description || 'Segregated, verified scrap lot ready for authorized recycling.'
     };
 
-    setRecyclerLots([newLot, ...recyclerLots]);
+    setRecyclerLots(prev => [newLot, ...prev]);
     setIsCreateLotModalOpen(false);
     showToast(`Lot ${lotId} published to Authorized Recycler Marketplace!`, 'success');
   };
@@ -394,9 +405,9 @@ export function AppProvider({ children }) {
 
     const newBid = {
       id: `bid-${Date.now()}`,
-      recyclerId: MOCK_USERS.recycler.id,
-      recyclerName: MOCK_USERS.recycler.companyName,
-      cpcbRegistrationNo: MOCK_USERS.recycler.cpcbRegistrationNo,
+      recyclerId: activeUser?.id || 'REC-01',
+      recyclerName: activeUser?.companyName || activeUser?.name || 'CPCB Registered Recycler',
+      cpcbRegistrationNo: activeUser?.cpcbRegistrationNo || 'CPCB/E-WASTE/REG/2024/9021',
       bidAmount: amount,
       ratePerKg: targetLot?.totalWeightKg ? Math.round(amount / targetLot.totalWeightKg) : 410,
       notes: recyclerNotes || 'Pickup arranged with CPCB certified transport. Immediate Escrow settlement upon acceptance.',
@@ -498,25 +509,21 @@ export function AppProvider({ children }) {
     placeRecyclerBid(lotId, amount, 'Direct procurement request at agreed terms. Ready for Escrow dispatch.');
   };
 
-  // Reset demo
+  // Reset demo / clean state
   const resetDemoData = () => {
-    setPickupRequests(INITIAL_PICKUP_REQUESTS);
-    setRecyclerLots(INITIAL_RECYCLER_LOTS);
+    setPickupRequests([]);
+    setRecyclerLots([]);
     setCitizenStats({
-      greenCoins: 420,
-      co2SavedKg: 58.4,
-      treesEquivalent: 2.9,
-      landfillDivertedKg: 124.0,
-      totalEarnedRs: 12850
+      greenCoins: 0,
+      co2SavedKg: 0,
+      treesEquivalent: 0,
+      landfillDivertedKg: 0,
+      totalEarnedRs: 0
     });
-    setKabadiwalaInventory([
-      { id: 'inv-1', title: 'Collected Server PCBs & Telecom Boards', weightKg: 45, estValue: 17500, category: 'PCBs' },
-      { id: 'inv-2', title: 'Mixed Heavy Copper Motors & AC Coils', weightKg: 30, estValue: 15300, category: 'Copper' },
-      { id: 'inv-3', title: 'Lithium & Lead-Acid Cells (Intact)', weightKg: 80, estValue: 6560, category: 'Batteries' },
-    ]);
+    setKabadiwalaInventory([]);
     setCurrentView('landing');
     safeStorage.clearAppKeys();
-    showToast('Platform data reset to landing page and default scenario!', 'info');
+    showToast('Platform reset: all test lots and requests cleared for clean demo!', 'info');
   };
 
   return (

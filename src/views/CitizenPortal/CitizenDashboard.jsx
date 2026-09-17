@@ -326,9 +326,9 @@ export default function CitizenDashboard() {
                   </div>
 
                   <div className="text-xs text-slate-500 flex flex-wrap gap-x-4 gap-y-1">
-                    <span>Collector: <strong className="text-slate-800">Ramesh Scrap Aggregators</strong></span>
+                    <span>Collector: <strong className="text-slate-800">{req.assignedKabadiwalaName || 'Verified Scrap Collector'}</strong></span>
                     <span>Scale Serial: <strong className="text-slate-800 font-mono">DS-44 (Govt Calibrated)</strong></span>
-                    <span>Completed: <strong className="text-slate-800">{req.preferredSlot}</strong></span>
+                    <span>Completed: <strong className="text-slate-800">{req.completedAt || req.preferredSlot}</strong></span>
                   </div>
 
                   {/* Items chips */}

@@ -42,11 +42,11 @@ export default function KabadiwalaDashboard() {
   });
 
   const activePickups = pickupRequests.filter(r => r.status === 'accepted');
+  const completedPickups = pickupRequests.filter(r => r.status === 'completed');
   const myLots = recyclerLots.filter(l => 
     l.kabadiwalaId === currentUser?.id || 
     (currentUser?.name && l.kabadiwalaName?.toLowerCase().includes(currentUser.name.toLowerCase())) ||
-    (currentUser?.businessName && l.kabadiwalaName?.toLowerCase().includes(currentUser.businessName.toLowerCase())) ||
-    l.kabadiwalaName?.includes('Ramesh')
+    (currentUser?.businessName && l.kabadiwalaName?.toLowerCase().includes(currentUser.businessName.toLowerCase()))
   );
 
   return (
@@ -59,7 +59,7 @@ export default function KabadiwalaDashboard() {
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5" />
-                Aggregator Hub • {currentUser?.area || 'Okhla Industrial Area'}
+                Aggregator Hub • {currentUser?.area || 'Local Collection Zone'}
               </span>
               <span className="flex items-center gap-1 text-xs text-emerald-800 font-mono font-bold">
                 <Wifi className="w-3 h-3 text-emerald-700" />
@@ -81,12 +81,12 @@ export default function KabadiwalaDashboard() {
               <span className="text-[10px] uppercase font-bold text-slate-500 block">Rating</span>
               <div className="flex items-center justify-center gap-1 mt-0.5">
                 <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                <span className="text-base font-bold text-slate-900">4.9</span>
+                <span className="text-base font-bold text-slate-900">5.0</span>
               </div>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[95px]">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">Pickups</span>
-              <span className="text-base font-bold text-emerald-800 block mt-0.5">{currentUser?.completedPickupsCount || 312}</span>
+              <span className="text-base font-bold text-emerald-800 block mt-0.5">{completedPickups.length}</span>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[95px]">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">Vehicle</span>

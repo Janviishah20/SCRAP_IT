@@ -17,14 +17,14 @@ export default function CreateLotModal() {
     currentUser 
   } = useApp();
 
-  const [lotTitle, setLotTitle] = useState('Segregated Server Motherboards & High-Grade PCBs');
+  const [lotTitle, setLotTitle] = useState('');
   const [category, setCategory] = useState('Printed Circuit Boards (PCBs)');
-  const [totalWeightKg, setTotalWeightKg] = useState(50);
-  const [askingRatePerKg, setAskingRatePerKg] = useState(410);
+  const [totalWeightKg, setTotalWeightKg] = useState('');
+  const [askingRatePerKg, setAskingRatePerKg] = useState('');
   const [purityGrade, setPurityGrade] = useState('Grade A (Heavy Gold Pins / Server Scrap)');
-  const [location, setLocation] = useState(currentUser?.hubAddress || 'Okhla Phase 2 Scrap Yard, New Delhi');
-  const [photoUrl, setPhotoUrl] = useState('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80');
-  const [description, setDescription] = useState('Pure sorted circuit boards with zero plastic frame. Ready for direct copper & gold smelter extraction.');
+  const [location, setLocation] = useState(currentUser?.hubAddress || currentUser?.area || '');
+  const [photoUrl, setPhotoUrl] = useState(null);
+  const [description, setDescription] = useState('');
   const [hasConsent, setHasConsent] = useState(true);
   const [formError, setFormError] = useState('');
 

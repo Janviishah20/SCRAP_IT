@@ -63,7 +63,7 @@ export default function RecyclerDashboard() {
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {currentUser?.companyName || 'Bharat Eco-Recyclers & Smelters Ltd'}
+              {currentUser?.companyName || currentUser?.name || 'Authorized Smelter & Recycling Facility'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed">
               Procure verified wholesale e-waste lots directly from certified kabadiwala aggregators. Automate statutory Central Pollution Control Board (CPCB) Extended Producer Responsibility credits.
@@ -74,15 +74,15 @@ export default function RecyclerDashboard() {
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[100px]">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">Monthly Cap</span>
-              <span className="text-lg font-bold text-slate-900">{currentUser?.monthlyCapacityTons || 450} T</span>
+              <span className="text-lg font-bold text-slate-900">{currentUser?.monthlyCapacityTons || 500} T</span>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[100px]">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">Lots Procured</span>
-              <span className="text-lg font-bold text-emerald-800">{currentUser?.totalLotsPurchased || 48}</span>
+              <span className="text-lg font-bold text-emerald-800">{purchasedLots.length}</span>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center min-w-[100px]">
               <span className="text-[10px] uppercase font-bold text-slate-500 block">EPR Credits</span>
-              <span className="text-lg font-bold text-emerald-800">+{currentUser?.totalEPRCreditsGenerated || 1840}</span>
+              <span className="text-lg font-bold text-emerald-800">+{purchasedLots.reduce((acc, l) => acc + Math.round((l.totalWeightKg || 50) * 20), 0)}</span>
             </div>
           </div>
         </div>

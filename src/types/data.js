@@ -48,217 +48,50 @@ export const SCRAP_CATEGORIES = [
   }
 ];
 
-export const INITIAL_PICKUP_REQUESTS = [
-  {
-    id: 'REQ-901',
-    citizenName: 'Rahul Sharma',
-    citizenPhone: '+91 98101 23456',
-    address: 'Flat 402, Lotus Greens, Sector 78, Noida, UP',
-    landmark: 'Near Mahagun Mart',
-    pincode: '201305',
-    coordinates: { lat: 28.5672, lng: 77.3892 },
-    distanceKm: 1.4,
-    preferredSlot: 'Today, 3:00 PM - 5:00 PM',
-    createdAt: '10 mins ago',
-    status: 'pending', // 'pending' | 'accepted' | 'in_progress' | 'completed' | 'cancelled'
-    wasteType: 'E-Waste & Appliances',
-    itemsSummary: [
-      { itemId: 'ew_laptop', name: 'Old Laptops', qty: 2, unit: 'unit', estRate: 480 },
-      { itemId: 'ew_cpu', name: 'Old Desktop CPU', qty: 1, unit: 'unit', estRate: 380 },
-      { itemId: 'ew_wires', name: 'Old Cable Wires', qty: 4, unit: 'kg', estRate: 290 },
-    ],
-    estimatedTotalWeightKg: 18,
-    estimatedPayout: 2500,
-    photoUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=600&q=80',
-    assignedKabadiwalaId: null,
-    actualWeightKg: null,
-    finalAmountPaid: null,
-    vehicleRecommended: '3-Wheeler E-Loader (Payload: Up to 100kg)',
-    notes: 'Please bring digital weighing scale for the copper cables.'
-  },
-  {
-    id: 'REQ-902',
-    citizenName: 'Priya Mehra',
-    citizenPhone: '+91 98712 34567',
-    address: 'H-14, Green Park Extension, New Delhi',
-    landmark: 'Near Metro Gate No. 2',
-    pincode: '110016',
-    coordinates: { lat: 28.5589, lng: 77.2028 },
-    distanceKm: 2.8,
-    preferredSlot: 'Tomorrow, 10:00 AM - 12:00 PM',
-    status: 'pending',
-    wasteType: 'Heavy E-Waste & Refrigerator',
-    itemsSummary: [
-      { itemId: 'app_split_ac', name: 'Split AC (1.5 Ton)', qty: 1, unit: 'unit', estRate: 4600 },
-      { itemId: 'ew_li_ion', name: 'Inverter Batteries', qty: 35, unit: 'kg', estRate: 82 },
-    ],
-    estimatedTotalWeightKg: 75,
-    estimatedPayout: 7470,
-    photoUrl: 'https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=600&q=80',
-    assignedKabadiwalaId: null,
-    actualWeightKg: null,
-    finalAmountPaid: null,
-    vehicleRecommended: 'Mini Truck / Commercial Tempo (Payload: 200kg+)',
-    notes: 'Lift is available. AC is already dismounted.'
-  },
-  {
-    id: 'REQ-900',
-    citizenName: 'Anil Verma',
-    citizenPhone: '+91 99112 88776',
-    address: 'B-32, Lajpat Nagar III, New Delhi',
-    landmark: 'Behind Central Market',
-    pincode: '110024',
-    coordinates: { lat: 28.5701, lng: 77.2405 },
-    distanceKm: 0.8,
-    preferredSlot: 'Completed Today',
-    status: 'completed',
-    wasteType: 'Computer Hardware Scrap',
-    itemsSummary: [
-      { itemId: 'ew_pcb_grade_a', name: 'Motherboards & PCBs', qty: 12, unit: 'kg', estRate: 390 },
-      { itemId: 'ew_smartphone', name: 'Old Feature Phones', qty: 4, unit: 'unit', estRate: 120 }
-    ],
-    estimatedTotalWeightKg: 14,
-    estimatedPayout: 5160,
-    photoUrl: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=600&q=80',
-    assignedKabadiwalaId: 'KAB-01',
-    actualWeightKg: 13.8,
-    finalAmountPaid: 5080,
-    vehicleRecommended: 'Bicycle / Motorized Two-Wheeler',
-    notes: 'Weighed in front of customer using Digital Bluetooth Scale #DS-44.'
-  }
-];
+export const INITIAL_PICKUP_REQUESTS = [];
 
-export const INITIAL_RECYCLER_LOTS = [
-  {
-    id: 'LOT-EW-401',
-    lotTitle: 'Grade-A Mixed PCB Motherboards & Server Circuitry',
-    kabadiwalaId: 'KAB-01',
-    kabadiwalaName: 'Ramesh Scrap Aggregators',
-    kabadiwalaPhone: '+91 98210 99881',
-    location: 'Okhla Industrial Area Ph-2, New Delhi',
-    distanceKm: 4.2,
-    category: 'Printed Circuit Boards (PCBs)',
-    totalWeightKg: 85,
-    askingRatePerKg: 420,
-    totalLotPrice: 35700,
-    purityGrade: 'Grade A (High Gold/Copper Pins)',
-    estimatedYield: {
-      copper: '14.2 kg (16.7%)',
-      preciousMetals: '185 ppm (Gold/Silver/Palladium)',
-      aluminum: '9.5 kg (11.1%)',
-      hazardousFreeCert: 'Verified Non-Toxic Dismantled'
-    },
-    photoUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-    status: 'pending_approval', // 'available' | 'pending_approval' | 'sold'
-    bids: [
-      { 
-        id: 'bid-101', 
-        recyclerId: 'REC-01',
-        recyclerName: 'Bharat Eco-Recyclers & Smelters Ltd', 
-        cpcbRegistrationNo: 'CPCB/E-WASTE/REG/2024/9021',
-        bidAmount: 34850, 
-        ratePerKg: 410,
-        date: '25 mins ago',
-        notes: 'Smelter pickup arranged via certified closed container truck. Ready for immediate weighbridge Escrow clearance.',
-        status: 'pending'
-      }
-    ],
-    createdAt: 'Today, 11:30 AM',
-    eprEligible: true,
-    description: 'Sorted, stripped server & desktop motherboards with zero plastic casings. Heavy gold-plated connectors intact.'
-  },
-  {
-    id: 'LOT-EW-402',
-    lotTitle: 'Telecom Grade Li-Ion & Inverter Lead Acid Batteries Lot',
-    kabadiwalaId: 'KAB-02',
-    kabadiwalaName: 'Delhi Green Waste Hub',
-    kabadiwalaPhone: '+91 97115 44332',
-    location: 'Mayapuri Scrap Yard, New Delhi',
-    distanceKm: 9.6,
-    category: 'Batteries & Hazardous Energy Cells',
-    totalWeightKg: 240,
-    askingRatePerKg: 95,
-    totalLotPrice: 22800,
-    purityGrade: 'Intact Industrial Cells (Zero Leakage)',
-    estimatedYield: {
-      leadCobalt: '168 kg (70% recoverable)',
-      acidElectrolyte: 'Neutralized Safe Drain',
-      plasticsChassis: '32 kg (13.3%)',
-      hazardousFreeCert: 'CPCB Transport Norms Compliant'
-    },
-    photoUrl: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80',
-    status: 'available',
-    bids: [],
-    createdAt: 'Yesterday, 4:15 PM',
-    eprEligible: true,
-    description: 'Bulk lot collected from residential inverter replacements and commercial power backups. Tested no swelling.'
-  },
-  {
-    id: 'LOT-EW-403',
-    lotTitle: 'High-Purity Heavy Copper Windings & Electric Motors',
-    kabadiwalaId: 'KAB-01',
-    kabadiwalaName: 'Ramesh Scrap Aggregators',
-    kabadiwalaPhone: '+91 98210 99881',
-    location: 'Okhla Industrial Area Ph-2, New Delhi',
-    distanceKm: 4.2,
-    category: 'Copper Windings & Electric Coils',
-    totalWeightKg: 65,
-    askingRatePerKg: 530,
-    totalLotPrice: 34450,
-    purityGrade: '99.2% Electrolytic Red Copper',
-    estimatedYield: {
-      copper: '61.5 kg (94.6%)',
-      ironStator: '3.5 kg',
-      hazardousFreeCert: 'Pure Metal - Non Hazardous'
-    },
-    photoUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80',
-    status: 'sold',
-    soldTo: 'Bharat Recycling Technologies Ltd',
-    soldPrice: 34000,
-    certificateId: 'EPR-IN-2026-9932',
-    createdAt: '2 days ago',
-    eprEligible: true,
-    description: 'Extracted clean copper coils from AC compressors, induction motors and ceiling fans.'
-  }
-];
+export const INITIAL_RECYCLER_LOTS = [];
 
 export const MOCK_USERS = {
   citizen: {
     id: 'CIT-01',
-    name: 'Rahul Sharma',
+    name: '',
     role: 'citizen',
-    email: 'rahul.s@connect.in',
-    phone: '+91 98101 23456',
-    address: 'Flat 402, Lotus Greens, Sector 78, Noida',
-    greenCoins: 420,
-    co2SavedKg: 58.4,
-    treesEquivalent: 2.9,
-    landfillDivertedKg: 124.0
+    email: '',
+    phone: '',
+    address: '',
+    area: '',
+    greenCoins: 0,
+    co2SavedKg: 0,
+    treesEquivalent: 0,
+    landfillDivertedKg: 0
   },
   kabadiwala: {
     id: 'KAB-01',
-    name: 'Ramesh Kumar',
-    businessName: 'Ramesh Scrap Aggregators',
+    name: '',
+    businessName: '',
     role: 'kabadiwala',
-    email: 'ramesh.scrap@connect.in',
-    phone: '+91 98210 99881',
-    hubAddress: 'Shed 12, Okhla Phase 2, New Delhi',
-    rating: 4.9,
-    completedPickupsCount: 312,
+    email: '',
+    phone: '',
+    hubAddress: '',
+    area: '',
+    rating: 5.0,
+    completedPickupsCount: 0,
     verifiedDigitalScale: 'DS-44 (Govt Calibrated)',
-    activeVehicle: 'E-Loader 3-Wheeler (DL 1ER 4921)'
+    activeVehicle: 'E-Loader 3-Wheeler'
   },
   recycler: {
     id: 'REC-01',
-    name: 'Vikramaditya Singhania',
-    companyName: 'Bharat Eco-Recyclers & Smelters Ltd',
+    name: '',
+    companyName: '',
     role: 'recycler',
-    email: 'vikram@bharatecorecyclers.com',
+    email: '',
+    phone: '',
     cpcbRegistrationNo: 'CPCB/E-WASTE/REG/2024/9021',
     licenseStatus: 'Authorized Grade-1 Smelter',
-    factoryLocation: 'RIICO Industrial Area, Bhiwadi & Okhla Delhi',
-    monthlyCapacityTons: 450,
-    totalLotsPurchased: 48,
-    totalEPRCreditsGenerated: 1840
+    factoryLocation: '',
+    monthlyCapacityTons: 500,
+    totalLotsPurchased: 0,
+    totalEPRCreditsGenerated: 0
   }
 };
