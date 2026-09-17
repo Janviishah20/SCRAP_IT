@@ -336,38 +336,121 @@ export function AppProvider({ children }) {
     showToast(`Lot ${lotId} published to Authorized Recycler Marketplace!`, 'success');
   };
 
-  // Recycler Action: Buy Lot & Generate EPR Certificate
-  const buyRecyclerLot = (lotId, bidPrice = null) => {
-    const certNum = `EPR-IN-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
-    
-    let boughtLot = null;
+  // Recycler Action: Place an Offer / Bid on a Lot (Awaiting Kabadiwala Acceptance)
+  const placeRecyclerBid = (lotId, bidAmount, recyclerNotes = '') => {
+    const amount = Number(bidAmount);
+    if (!amount || amount <= 0) {
+      showToast('Please enter a valid bid amount greater than 0.', 'error');
+      return;
+    }
+
+    const targetLot = recyclerLots.find(l => l.id === lotId);
+    const kabadiwalaName = targetLot?.kabadiwalaName || 'Aggregator';
+
+    const newBid = {
+      id: `bid-${Date.now()}`,
+      recyclerId: MOCK_USERS.recycler.id,
+      recyclerName: MOCK_USERS.recycler.companyName,
+      cpcbRegistrationNo: MOCK_USERS.recycler.cpcbRegistrationNo,
+      bidAmount: amount,
+      ratePerKg: targetLot?.totalWeightKg ? Math.round(amount / targetLot.totalWeightKg) : 410,
+      notes: recyclerNotes || 'Pickup arranged with CPCB certified transport. Immediate Escrow settlement upon acceptance.',
+      status: 'pending',
+      date: 'Just now'
+    };
+
     setRecyclerLots(prev => prev.map(lot => {
       if (lot.id === lotId) {
-        boughtLot = {
+        const existingBids = Array.isArray(lot.bids) ? lot.bids : [];
+        return {
           ...lot,
-          status: 'sold',
-          soldTo: MOCK_USERS.recycler.companyName,
-          soldPrice: bidPrice || lot.totalLotPrice,
-          certificateId: certNum,
-          soldDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+          status: 'pending_approval',
+          bids: [newBid, ...existingBids]
         };
-        return boughtLot;
       }
       return lot;
     }));
 
-    if (boughtLot) {
+    showToast(`Offer of Rs. ${amount.toLocaleString('en-IN')} submitted to ${kabadiwalaName}! Awaiting aggregator review & agreement.`, 'success');
+  };
+
+  // Kabadiwala Action: Accept an Offer from a Recycler (Triggers Escrow Settlement & EPR Minting)
+  const acceptRecyclerBid = (lotId, bidId) => {
+    const certNum = `EPR-IN-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+    let acceptedLot = null;
+    let winningBid = null;
+
+    setRecyclerLots(prev => prev.map(lot => {
+      if (lot.id === lotId) {
+        winningBid = (lot.bids || []).find(b => b.id === bidId) || {
+          recyclerName: MOCK_USERS.recycler.companyName,
+          cpcbRegistrationNo: MOCK_USERS.recycler.cpcbRegistrationNo,
+          bidAmount: lot.totalLotPrice
+        };
+
+        const updatedBids = (lot.bids || []).map(b => 
+          b.id === bidId ? { ...b, status: 'accepted' } : { ...b, status: 'rejected' }
+        );
+
+        acceptedLot = {
+          ...lot,
+          status: 'sold',
+          soldTo: winningBid.recyclerName,
+          soldPrice: winningBid.bidAmount,
+          certificateId: certNum,
+          soldDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+          bids: updatedBids,
+          acceptedBidId: bidId
+        };
+        return acceptedLot;
+      }
+      return lot;
+    }));
+
+    if (acceptedLot && winningBid) {
       setActiveEPRModalData({
         certificateNumber: certNum,
-        recycler: MOCK_USERS.recycler,
-        lot: boughtLot,
-        cpcbReg: MOCK_USERS.recycler.cpcbRegistrationNo,
+        recycler: {
+          ...MOCK_USERS.recycler,
+          companyName: winningBid.recyclerName,
+          cpcbRegistrationNo: winningBid.cpcbRegistrationNo || MOCK_USERS.recycler.cpcbRegistrationNo
+        },
+        lot: acceptedLot,
+        cpcbReg: winningBid.cpcbRegistrationNo || MOCK_USERS.recycler.cpcbRegistrationNo,
         issueDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-        co2Offset: (boughtLot.totalWeightKg * 4.8).toFixed(1),
-        heavyMetalsDiverted: (boughtLot.totalWeightKg * 0.42).toFixed(1)
+        co2Offset: (acceptedLot.totalWeightKg * 4.8).toFixed(1),
+        heavyMetalsDiverted: (acceptedLot.totalWeightKg * 0.42).toFixed(1)
       });
-      showToast(`Lot ${lotId} procured! CPCB EPR Certificate generated.`, 'success');
+
+      showToast(`Deal agreed! Rs. ${winningBid.bidAmount.toLocaleString('en-IN')} settled via Escrow to your account. CPCB EPR Certificate generated.`, 'success');
     }
+  };
+
+  // Kabadiwala Action: Decline an Offer from a Recycler
+  const rejectRecyclerBid = (lotId, bidId) => {
+    setRecyclerLots(prev => prev.map(lot => {
+      if (lot.id === lotId) {
+        const updatedBids = (lot.bids || []).map(b => 
+          b.id === bidId ? { ...b, status: 'rejected' } : b
+        );
+        const hasPendingBids = updatedBids.some(b => b.status === 'pending');
+        return {
+          ...lot,
+          status: hasPendingBids ? 'pending_approval' : 'available',
+          bids: updatedBids
+        };
+      }
+      return lot;
+    }));
+
+    showToast('Recycler offer declined. Lot remains active on the marketplace.', 'info');
+  };
+
+  // Recycler Action: Procure Lot (Submits offer to Kabadiwala for approval)
+  const buyRecyclerLot = (lotId, bidPrice = null) => {
+    const lot = recyclerLots.find(l => l.id === lotId);
+    const amount = bidPrice || lot?.totalLotPrice || 35000;
+    placeRecyclerBid(lotId, amount, 'Direct procurement request at agreed terms. Ready for Escrow dispatch.');
   };
 
   // Reset demo
@@ -416,6 +499,9 @@ export function AppProvider({ children }) {
       openWeighingScale,
       completePickup,
       createRecyclerLot,
+      placeRecyclerBid,
+      acceptRecyclerBid,
+      rejectRecyclerBid,
       buyRecyclerLot,
       resetDemoData,
       isRateModalOpen,

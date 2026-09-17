@@ -7,20 +7,23 @@ import {
   CheckCircle2, 
   FileText, 
   Truck, 
-  Cpu
+  Cpu,
+  Clock,
+  Send
 } from 'lucide-react';
 
 export default function RecyclerDashboard() {
   const { 
     currentUser, 
     recyclerLots, 
-    buyRecyclerLot, 
+    placeRecyclerBid, 
     setActiveEPRModalData 
   } = useApp();
 
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [biddingLotId, setBiddingLotId] = useState(null);
   const [customBidPrice, setCustomBidPrice] = useState('');
+  const [bidNote, setBidNote] = useState('');
 
   const availableLots = recyclerLots.filter(l => l.status !== 'sold');
   const purchasedLots = recyclerLots.filter(l => l.status === 'sold');
@@ -32,9 +35,14 @@ export default function RecyclerDashboard() {
 
   const handlePlaceBid = (lotId) => {
     if (!customBidPrice || Number(customBidPrice) <= 0) return;
-    buyRecyclerLot(lotId, Number(customBidPrice));
+    placeRecyclerBid(lotId, Number(customBidPrice), bidNote);
     setBiddingLotId(null);
     setCustomBidPrice('');
+    setBidNote('');
+  };
+
+  const handleProcureAtAsking = (lot) => {
+    placeRecyclerBid(lot.id, lot.totalLotPrice, 'Direct procurement offer at full reserve price. Ready for Escrow settlement.');
   };
 
   return (
@@ -220,49 +228,93 @@ export default function RecyclerDashboard() {
 
                 {/* Purchase & Bidding Action Bar */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100">
-                  {biddingLotId === lot.id ? (
-                    <div className="flex items-center gap-2 w-full">
-                      <input 
-                        type="number" 
-                        placeholder="Enter bid amount (Rs.)..."
-                        value={customBidPrice}
-                        onChange={e => setCustomBidPrice(e.target.value)}
-                        className="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:bg-white focus:ring-1 focus:ring-emerald-700"
-                      />
-                      <button
-                        onClick={() => handlePlaceBid(lot.id)}
-                        className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition"
-                      >
-                        Submit Offer
-                      </button>
-                      <button
-                        onClick={() => setBiddingLotId(null)}
-                        className="px-3 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-200 transition"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          setBiddingLotId(lot.id);
-                          setCustomBidPrice(lot.totalLotPrice.toString());
-                        }}
-                        className="w-full sm:w-auto px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-xl border border-slate-200 transition"
-                      >
-                        Counter Bid
-                      </button>
+                  {(() => {
+                    const activeBid = (lot.bids || []).find(b => b.status === 'pending');
 
-                      <button
-                        onClick={() => buyRecyclerLot(lot.id)}
-                        className="w-full sm:w-auto px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2"
-                      >
-                        <Truck className="w-4 h-4" />
-                        <span>Procure Lot & Generate EPR</span>
-                      </button>
-                    </>
-                  )}
+                    if (activeBid) {
+                      return (
+                        <div className="w-full p-3.5 bg-amber-50/90 border border-amber-300 rounded-xl space-y-1.5 text-xs">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
+                              <span className="font-bold text-amber-950">
+                                Offer Placed: <strong className="font-mono text-emerald-800">Rs. {activeBid.bidAmount.toLocaleString('en-IN')}</strong>
+                              </span>
+                              <span className="text-[11px] text-amber-800 font-medium">
+                                (~Rs. {activeBid.ratePerKg || Math.round(activeBid.bidAmount / (lot.totalWeightKg || 1))}/kg)
+                              </span>
+                            </div>
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-200/80 text-amber-900 inline-block">
+                              Awaiting Kabadiwala Approval
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-600">
+                            Offer sent to <strong>{lot.kabadiwalaName}</strong>. Once they agree in their dashboard, Escrow payment settles and your CPCB EPR Certificate is issued.
+                          </p>
+                        </div>
+                      );
+                    }
+
+                    if (biddingLotId === lot.id) {
+                      return (
+                        <div className="space-y-2.5 w-full bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                            <div className="flex-1 relative">
+                              <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-500">Rs.</span>
+                              <input 
+                                type="number" 
+                                placeholder="Enter offer amount..."
+                                value={customBidPrice}
+                                onChange={e => setCustomBidPrice(e.target.value)}
+                                className="w-full pl-8 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-700"
+                              />
+                            </div>
+                            <button
+                              onClick={() => handlePlaceBid(lot.id)}
+                              className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-2xs"
+                            >
+                              <Send className="w-3.5 h-3.5" />
+                              <span>Submit Offer to Aggregator</span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setBiddingLotId(null);
+                                setCustomBidPrice('');
+                              }}
+                              className="px-3 py-2 bg-white text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-100 border border-slate-200 transition"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                          <span className="text-[10px] text-slate-500 block">
+                            Aggregator will review your price and CPCB registration before agreeing to the deal.
+                          </span>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <>
+                        <button
+                          onClick={() => {
+                            setBiddingLotId(lot.id);
+                            setCustomBidPrice(lot.totalLotPrice.toString());
+                          }}
+                          className="w-full sm:w-auto px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition"
+                        >
+                          Make Counter Offer
+                        </button>
+
+                        <button
+                          onClick={() => handleProcureAtAsking(lot)}
+                          className="w-full sm:w-auto px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2"
+                        >
+                          <Truck className="w-4 h-4" />
+                          <span>Offer Asking Price (Rs. {lot.totalLotPrice.toLocaleString('en-IN')})</span>
+                        </button>
+                      </>
+                    );
+                  })()}
                 </div>
 
               </div>

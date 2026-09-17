@@ -149,9 +149,19 @@ export const INITIAL_RECYCLER_LOTS = [
       hazardousFreeCert: 'Verified Non-Toxic Dismantled'
     },
     photoUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-    status: 'available', // 'available' | 'bid_placed' | 'sold'
+    status: 'pending_approval', // 'available' | 'pending_approval' | 'sold'
     bids: [
-      { id: 'b1', recyclerName: 'EcoGreen Smelters Ltd', bidAmount: 34500, date: '1 hr ago' }
+      { 
+        id: 'bid-101', 
+        recyclerId: 'REC-01',
+        recyclerName: 'Bharat Eco-Recyclers & Smelters Ltd', 
+        cpcbRegistrationNo: 'CPCB/E-WASTE/REG/2024/9021',
+        bidAmount: 34850, 
+        ratePerKg: 410,
+        date: '25 mins ago',
+        notes: 'Smelter pickup arranged via certified closed container truck. Ready for immediate weighbridge Escrow clearance.',
+        status: 'pending'
+      }
     ],
     createdAt: 'Today, 11:30 AM',
     eprEligible: true,
