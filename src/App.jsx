@@ -2,7 +2,7 @@ import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import CookieBanner from './components/CookieBanner';
+import PrivacyNotice from './components/PrivacyNotice';
 
 // Views
 import LandingHero from './views/LandingHero';
@@ -65,8 +65,8 @@ function MainLayout() {
         initialTab={legalModalTab} 
       />
 
-      {/* Cookie / Session Data Banner */}
-      <CookieBanner onOpenLegal={openLegalModal} />
+      {/* Privacy Notice */}
+      <PrivacyNotice onOpenLegal={openLegalModal} />
 
       {/* Clean Footer */}
       <Footer />

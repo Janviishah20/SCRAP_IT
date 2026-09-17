@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ShieldCheck, X } from 'lucide-react';
 import { safeStorage } from '../utils/storage';
 
-export default function CookieBanner({ onOpenLegal }) {
+export default function PrivacyNotice({ onOpenLegal }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const consent = safeStorage.getItem('kc_cookie_consent');
+    const consent = safeStorage.getItem('kc_privacy_consent');
     if (!consent) {
       const timer = setTimeout(() => setVisible(true), 1200);
       return () => clearTimeout(timer);
@@ -14,12 +14,12 @@ export default function CookieBanner({ onOpenLegal }) {
   }, []);
 
   const handleAccept = () => {
-    safeStorage.setItem('kc_cookie_consent', 'accepted');
+    safeStorage.setItem('kc_privacy_consent', 'accepted');
     setVisible(false);
   };
 
   const handleDecline = () => {
-    safeStorage.setItem('kc_cookie_consent', 'essential_only');
+    safeStorage.setItem('kc_privacy_consent', 'essential_only');
     setVisible(false);
   };
 
@@ -63,7 +63,7 @@ export default function CookieBanner({ onOpenLegal }) {
           <button
             onClick={() => setVisible(false)}
             className="text-slate-400 hover:text-slate-600 p-1"
-            aria-label="Dismiss cookie notice"
+            aria-label="Dismiss notice"
           >
             <X className="h-4 w-4" />
           </button>

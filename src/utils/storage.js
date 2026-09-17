@@ -1,4 +1,4 @@
-﻿// Safe storage utility resilient to private browsing, Brave Shields,
+// Safe storage utility resilient to private browsing, Brave Shields,
 // quota limits, and corrupted JSON values ('undefined', 'null').
 
 const memoryStore = {};
@@ -47,7 +47,7 @@ export const safeStorage = {
       'kc_lots',
       'kc_citizen_stats',
       'kc_kabadiwala_inv',
-      'kc_cookie_consent'
+      'kc_privacy_consent'
     ];
     appKeys.forEach((key) => {
       try {
