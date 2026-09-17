@@ -10,18 +10,11 @@ import { safeStorage } from '../utils/storage';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  // Navigation view: 'portal' | 'auth' | 'landing' | 'not_found' | 'estimator'
-  const [currentView, setCurrentView] = useState(() => {
-    const validViews = ['portal', 'auth', 'landing', 'not_found', 'estimator'];
-    const saved = safeStorage.getItem('kc_view');
-    // Default to 'landing' so the landing page is the first page seen
-    return validViews.includes(saved) ? saved : 'landing';
-  });
+  // Navigation view: always starts on landing page
+  const [currentView, setCurrentView] = useState('landing');
 
-  // Auth State
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return safeStorage.getJSON('kc_auth', true); // Default true so user can test immediately
-  });
+  // Auth State: ALWAYS starts signed out every time the website is opened
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Current active portal / role: 'citizen' | 'kabadiwala' | 'recycler'
   const [currentRole, setCurrentRole] = useState(() => {
@@ -107,13 +100,11 @@ export function AppProvider({ children }) {
     safeStorage.setItem('kc_role', currentRole);
   }, [currentRole]);
 
+  // Ensure every fresh website visit starts completely signed out and on the landing page
   useEffect(() => {
-    safeStorage.setJSON('kc_auth', isAuthenticated);
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    safeStorage.setItem('kc_view', currentView);
-  }, [currentView]);
+    safeStorage.removeItem('kc_auth');
+    safeStorage.removeItem('kc_view');
+  }, []);
 
   useEffect(() => {
     safeStorage.setJSON('kc_pickups', pickupRequests);
@@ -223,10 +214,12 @@ export function AppProvider({ children }) {
     showToast(`Welcome back, ${resolvedName}!`, 'success');
   };
 
-  // Logout simulation
+  // Logout action
   const logout = () => {
     setIsAuthenticated(false);
     setCurrentView('landing');
+    safeStorage.removeItem('kc_auth');
+    safeStorage.removeItem('kc_view');
     showToast('Signed out of session.', 'info');
   };
 
