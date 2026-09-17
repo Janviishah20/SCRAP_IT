@@ -93,20 +93,12 @@ export default function Navbar() {
               >
                 Live Scrap Rates
               </button>
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <button 
                   onClick={() => setCurrentView('portal')} 
                   className={`transition-colors flex items-center gap-1.5 ${currentView === 'portal' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
                 >
                   <span>My Portal Dashboard</span>
-                </button>
-              ) : (
-                <button 
-                  onClick={() => openAuth('citizen')} 
-                  className={`transition-colors flex items-center gap-1.5 ${currentView === 'auth' ? 'text-emerald-800 font-bold' : 'hover:text-emerald-800'}`}
-                >
-                  <LogIn className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Sign In</span>
                 </button>
               )}
               <button 
@@ -248,7 +240,7 @@ export default function Navbar() {
                   onClick={() => { openAuth(currentRole || 'citizen'); setMobileMenuOpen(false); }}
                   className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between font-bold"
                 >
-                  <span>Sign In / Switch Portal</span>
+                  <span>Login / Choose View</span>
                   <LogIn className="w-3.5 h-3.5 text-emerald-700" />
                 </button>
                 <button
@@ -285,7 +277,7 @@ export default function Navbar() {
                     onClick={() => { openAuth('citizen'); setMobileMenuOpen(false); }}
                     className="w-full py-2.5 text-center text-xs font-bold bg-emerald-700 text-white rounded-xl"
                   >
-                    Login / Select Portal
+                    Login / Choose View
                   </button>
                 )}
               </div>
