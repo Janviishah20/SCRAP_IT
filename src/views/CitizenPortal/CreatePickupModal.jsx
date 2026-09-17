@@ -398,24 +398,24 @@ export default function CreatePickupModal() {
           </div>
 
           {/* Submit Action */}
-          <div className="pt-3 flex items-center justify-between border-t border-slate-200">
+          <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-200">
             <div>
               <span className="text-[10px] text-slate-500 block uppercase font-bold tracking-wider">Est. Payout Due:</span>
               <span className="text-xl font-bold text-emerald-800">Rs. {Math.round(totalEstPayout).toLocaleString('en-IN')}</span>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex items-center justify-end gap-2">
               <button 
                 type="button"
                 onClick={() => setIsCreatePickupModalOpen(false)}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition"
+                className="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition text-center"
               >
                 Cancel
               </button>
 
               <button 
                 type="submit"
-                className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition"
+                className="flex-1 sm:flex-initial px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition text-center"
               >
                 Confirm Pickup Booking
               </button>

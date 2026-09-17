@@ -210,18 +210,18 @@ export default function DoorstepWeighingModal() {
           </div>
 
           {/* Final Actions */}
-          <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-200">
+          <div className="pt-2 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 border-t border-slate-200">
             <button 
               type="button"
               onClick={() => setIsWeighingModalOpen(false)}
-              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition"
+              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition text-center"
             >
               Cancel
             </button>
 
             <button 
               type="submit"
-              className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center gap-2"
+              className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Verify & Disburse Rs. {Math.round(totalVerifiedPayout).toLocaleString('en-IN')}</span>

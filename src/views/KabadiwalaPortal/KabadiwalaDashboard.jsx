@@ -470,16 +470,16 @@ export default function KabadiwalaDashboard() {
                           )}
 
                           {/* ACTION BUTTONS: Agree vs Decline */}
-                          <div className="flex items-center justify-end gap-3 pt-1 border-t border-slate-100">
+                          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-1 border-t border-slate-100">
                             <button
                               onClick={() => rejectRecyclerBid(lot.id, bid.id)}
-                              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition"
+                              className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition text-center"
                             >
                               Decline Offer
                             </button>
                             <button
                               onClick={() => acceptRecyclerBid(lot.id, bid.id)}
-                              className="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-xs"
+                              className="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs text-center"
                             >
                               <CheckCircle2 className="w-4 h-4" />
                               <span>Agree & Settle via Escrow</span>

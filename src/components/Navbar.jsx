@@ -100,6 +100,17 @@ export default function Navbar() {
               >
                 Live Scrap Rates
               </button>
+              <button 
+                onClick={() => setCurrentView('estimator')} 
+                className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                  currentView === 'estimator' 
+                    ? 'text-emerald-900 bg-emerald-50 border border-emerald-200/80 font-bold shadow-2xs' 
+                    : 'hover:text-emerald-800 hover:bg-slate-100/70'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                <span>AI Estimator</span>
+              </button>
               {isAuthenticated && (
                 <button 
                   onClick={() => setCurrentView('portal')} 
@@ -217,10 +228,10 @@ export default function Navbar() {
                 </button>
               )}
 
-              {/* Mobile menu trigger */}
+              {/* Mobile menu trigger - synchronized with md:hidden */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 lg:hidden rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+                className="p-2 md:hidden rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
                 aria-label="Toggle mobile menu"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -232,38 +243,63 @@ export default function Navbar() {
 
           {/* Enhanced Mobile Navigation Drawer */}
           {mobileMenuOpen && (
-            <div className="lg:hidden py-4 border-t border-slate-200 space-y-3">
-              <div className="space-y-1 text-xs">
+            <div className="md:hidden py-4 border-t border-slate-200 space-y-3">
+              <div className="space-y-1.5 text-xs">
+                {/* Prominent AI Estimator in Mobile Drawer */}
+                <button
+                  onClick={() => { setCurrentView('estimator'); setMobileMenuOpen(false); }}
+                  className="w-full text-left py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 font-bold flex items-center justify-between transition"
+                >
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-emerald-700" />
+                    <span>AI E-Waste Estimator</span>
+                  </span>
+                  <span className="text-[10px] bg-emerald-200/80 text-emerald-900 px-2 py-0.5 rounded-full font-extrabold">
+                    Live Scan
+                  </span>
+                </button>
+
                 <button
                   onClick={() => { setCurrentView('landing'); setMobileMenuOpen(false); }}
-                  className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50"
+                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 transition"
                 >
                   Platform Overview
                 </button>
                 <button
                   onClick={() => { setIsRateModalOpen(true); setMobileMenuOpen(false); }}
-                  className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between"
+                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between transition"
                 >
                   <span>Daily Rate Index</span>
                   <Scale className="w-3.5 h-3.5 text-emerald-700" />
                 </button>
+
+                {isAuthenticated && (
+                  <button
+                    onClick={() => { setCurrentView('portal'); setMobileMenuOpen(false); }}
+                    className="w-full text-left py-2.5 px-3 rounded-lg text-emerald-900 bg-emerald-50/50 hover:bg-emerald-100/70 flex items-center justify-between font-semibold transition"
+                  >
+                    <span>My {currentRole.charAt(0).toUpperCase() + currentRole.slice(1)} Dashboard</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-emerald-700" />
+                  </button>
+                )}
+
                 <button
                   onClick={() => { openAuth(currentRole || 'citizen'); setMobileMenuOpen(false); }}
-                  className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between font-bold"
+                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between font-bold transition"
                 >
-                  <span>Login / Choose View</span>
+                  <span>Switch Portal / Choose View</span>
                   <LogIn className="w-3.5 h-3.5 text-emerald-700" />
                 </button>
                 <button
                   onClick={() => { openLegalModal('terms'); setMobileMenuOpen(false); }}
-                  className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between"
+                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between transition"
                 >
                   <span>Terms of Service</span>
                   <FileText className="w-3.5 h-3.5 text-slate-400" />
                 </button>
                 <button
                   onClick={() => { openLegalModal('privacy'); setMobileMenuOpen(false); }}
-                  className="w-full text-left py-2 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between"
+                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between transition"
                 >
                   <span>Privacy Policy (DPDP Act)</span>
                   <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
@@ -272,9 +308,9 @@ export default function Navbar() {
 
               <div className="pt-2 border-t border-slate-200">
                 {isAuthenticated ? (
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between pt-1">
                     <span className="text-xs text-slate-600 font-medium">
-                      Signed in as <strong className="text-slate-900">{currentRole}</strong>
+                      Signed in as <strong className="text-slate-900 capitalize">{currentRole}</strong>
                     </span>
                     <button
                       onClick={() => { logout(); setMobileMenuOpen(false); }}
@@ -286,7 +322,7 @@ export default function Navbar() {
                 ) : (
                   <button
                     onClick={() => { openAuth('citizen'); setMobileMenuOpen(false); }}
-                    className="w-full py-2.5 text-center text-xs font-bold bg-emerald-700 text-white rounded-xl"
+                    className="w-full py-2.5 text-center text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl transition"
                   >
                     Login / Choose View
                   </button>

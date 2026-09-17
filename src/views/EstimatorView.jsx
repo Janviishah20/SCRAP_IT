@@ -766,9 +766,9 @@ export default function EstimatorView({ embedded = false, onClose = null }) {
                 </span>
               </div>
 
-              {/* Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+              {/* Table with responsive horizontal scroll */}
+              <div className="overflow-x-auto -mx-2 sm:mx-0 px-2 sm:px-0">
+                <table className="w-full text-left text-xs min-w-[460px]">
                   <thead>
                     <tr className="border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px]">
                       <th className="pb-3 font-bold">Category</th>
@@ -783,7 +783,7 @@ export default function EstimatorView({ embedded = false, onClose = null }) {
                       <tr key={idx} className="hover:bg-slate-50/80 transition">
                         <td className="py-3 font-bold text-slate-900 flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
-                          <span>{item.category}</span>
+                          <span className="truncate max-w-[140px] sm:max-w-none">{item.category}</span>
                         </td>
                         <td className="py-3 text-center font-mono font-bold text-slate-800">
                           {item.count}
