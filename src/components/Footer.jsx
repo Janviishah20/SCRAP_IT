@@ -18,7 +18,7 @@ export default function Footer() {
                 <Recycle className="w-4 h-4" />
               </div>
               <span className="text-base font-extrabold text-slate-900 tracking-tight">
-                KABADIWALA<span className="text-emerald-700"> CONNECT</span>
+                SCRAP<span className="text-emerald-700">IT</span>
               </span>
             </div>
             <p className="text-slate-500 leading-relaxed text-xs">
@@ -82,8 +82,8 @@ export default function Footer() {
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
               <div className="flex items-center gap-2 text-slate-700">
                 <Mail className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <a href="mailto:support@kabadiwalaconnect.in" className="hover:text-emerald-800 hover:underline">
-                  support@kabadiwalaconnect.in
+                <a href="mailto:support@scrapit.in" className="hover:text-emerald-800 hover:underline">
+                  support@scrapit.in
                 </a>
               </div>
               <div className="flex items-center gap-2 text-slate-700">
@@ -102,7 +102,7 @@ export default function Footer() {
 
         {/* Legal & Compliance Bottom Strip (Items #26, #27, #37, #48) */}
         <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-          <p>© 2026 Kabadiwala Connect Technologies Pvt. Ltd. All rights reserved.</p>
+          <p>© 2026 SCRAPIT Technologies Pvt. Ltd. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <button 
               onClick={() => openLegalModal('privacy')}

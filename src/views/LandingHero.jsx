@@ -92,7 +92,7 @@ export default function LandingHero() {
             </h1>
 
             <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base max-w-xl">
-              Kabadiwala Connect connects households, informal collectors, and authorized industrial smelters into a unified digital chain of custody with calibrated digital scales and official EPR certificates.
+              SCRAPIT connects households, informal collectors, and authorized industrial smelters into a unified digital chain of custody with calibrated digital scales and official EPR certificates.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">

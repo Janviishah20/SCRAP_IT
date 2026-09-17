@@ -132,7 +132,7 @@ export default function EPRCertificateModal() {
                   Digitally Authorized Officer
                 </div>
                 <span className="block text-[10px] text-slate-500 mt-1">
-                  National E-Waste Circular Exchange (Kabadiwala Connect)
+                  National E-Waste Circular Exchange (SCRAPIT)
                 </span>
               </div>
             </div>

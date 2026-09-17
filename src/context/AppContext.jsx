@@ -125,20 +125,20 @@ export function AppProvider({ children }) {
   // Dynamic Document Title based on active context (Item #34: Fix page titles)
   useEffect(() => {
     if (currentView === 'landing') {
-      document.title = 'Kabadiwala Connect | Verified Doorstep Scrap & Circular E-Waste Platform';
+      document.title = 'SCRAPIT | Verified Doorstep Scrap & Circular E-Waste Platform';
     } else if (currentView === 'estimator') {
-      document.title = 'AI E-Waste Weight & Payout Estimator | Kabadiwala Connect';
+      document.title = 'AI E-Waste Weight & Payout Estimator | SCRAPIT';
     } else if (currentView === 'auth') {
-      document.title = 'Sign In | Kabadiwala Connect';
+      document.title = 'Sign In | SCRAPIT';
     } else if (currentView === 'not_found') {
-      document.title = '404 - Page Not Found | Kabadiwala Connect';
+      document.title = '404 - Page Not Found | SCRAPIT';
     } else {
       const titles = {
-        citizen: 'Citizen Portal | Kabadiwala Connect',
-        kabadiwala: 'Collector Partner Hub | Kabadiwala Connect',
-        recycler: 'Authorized Recycler B2B Exchange | Kabadiwala Connect'
+        citizen: 'Citizen Portal | SCRAPIT',
+        kabadiwala: 'Collector Partner Hub | SCRAPIT',
+        recycler: 'Authorized Recycler B2B Exchange | SCRAPIT'
       };
-      document.title = titles[currentRole] || 'Kabadiwala Connect';
+      document.title = titles[currentRole] || 'SCRAPIT';
     }
   }, [currentView, currentRole]);
 

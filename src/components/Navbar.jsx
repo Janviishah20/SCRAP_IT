@@ -74,7 +74,7 @@ export default function Navbar() {
               </div>
               <div>
                 <span className="text-base sm:text-lg font-extrabold tracking-tight text-slate-950">
-                  KABADIWALA<span className="text-emerald-700"> CONNECT</span>
+                  SCRAP<span className="text-emerald-700">IT</span>
                 </span>
                 <p className="text-[11px] text-slate-500 hidden sm:block">
                   Verified Doorstep Scrap and Circular E-Waste Platform

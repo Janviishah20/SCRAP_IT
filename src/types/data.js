@@ -1,4 +1,4 @@
-// Mock Database & Seed Data for Kabadiwala Connect
+// Mock Database & Seed Data for SCRAPIT
 
 export const SCRAP_CATEGORIES = [
   {

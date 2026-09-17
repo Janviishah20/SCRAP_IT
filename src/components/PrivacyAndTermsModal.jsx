@@ -99,7 +99,7 @@ export default function PrivacyAndTermsModal({ isOpen, onClose, initialTab = 'pr
               <div>
                 <h3 className="text-sm font-bold text-slate-900">4. Contact Grievance Officer</h3>
                 <p className="mt-1">
-                  For data correction or erasure requests, contact our designated Grievance Officer at <a href="mailto:grievance@kabadiwalaconnect.in" className="text-emerald-800 underline font-semibold">grievance@kabadiwalaconnect.in</a> or by phone at <a href="tel:+911149208000" className="text-emerald-800 underline font-semibold">+91 11 4920 8000</a>.
+                  For data correction or erasure requests, contact our designated Grievance Officer at <a href="mailto:grievance@scrapit.in" className="text-emerald-800 underline font-semibold">grievance@scrapit.in</a> or by phone at <a href="tel:+911149208000" className="text-emerald-800 underline font-semibold">+91 11 4920 8000</a>.
                 </p>
               </div>
             </>
@@ -108,7 +108,7 @@ export default function PrivacyAndTermsModal({ isOpen, onClose, initialTab = 'pr
               <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800">
                 <p className="font-semibold">Statutory Reference:</p>
                 <p className="mt-0.5 text-[11px]">
-                  All transactions and handovers facilitated by Kabadiwala Connect are governed by the E-Waste (Management) Rules, 2022 notified by the Ministry of Environment, Forest and Climate Change (MoEFCC), Government of India.
+                  All transactions and handovers facilitated by SCRAPIT are governed by the E-Waste (Management) Rules, 2022 notified by the Ministry of Environment, Forest and Climate Change (MoEFCC), Government of India.
                 </p>
               </div>
 
