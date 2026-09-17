@@ -74,31 +74,32 @@ export default function LandingHero() {
     <div className="space-y-16">
       
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden rounded-3xl border border-emerald-200/80 bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/30 p-6 sm:p-10 lg:p-12 shadow-sm">
+      <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-emerald-200/80 bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/30 p-4 sm:p-8 lg:p-12 shadow-sm">
         {/* Subtle decorative glow */}
         <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-emerald-400/10 blur-3xl"></div>
         <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-teal-400/10 blur-3xl"></div>
 
-        <div className="relative z-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div className="relative z-10 grid gap-8 lg:gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-100/90 px-3.5 py-1.5 text-xs font-bold text-emerald-900 shadow-2xs">
-              <ShieldCheck className="h-4 w-4 text-emerald-700" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-100/90 px-3 py-1 sm:px-3.5 sm:py-1.5 text-[11px] sm:text-xs font-bold text-emerald-900 shadow-2xs">
+              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-700 shrink-0" />
               <span>CPCB Compliant E-Waste Logistics Platform</span>
             </div>
 
-            <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-5xl">
+            <h1 className="mt-3.5 sm:mt-5 text-2xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight text-slate-950">
               Transparent Doorstep Scrap.
               <span className="block bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 bg-clip-text text-transparent">E-Waste Recycling.</span>
             </h1>
 
-            <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base max-w-xl">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-slate-600 max-w-xl">
               SCRAPIT connects households, informal collectors, and authorized industrial smelters into a unified digital chain of custody with calibrated digital scales and official EPR certificates.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            {/* Clean Structured Action Buttons */}
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3">
               <button
                 onClick={handleSchedulePickup}
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-emerald-700/25 transition hover:brightness-110 active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-emerald-700/25 transition hover:brightness-110 active:scale-[0.98]"
               >
                 <span>Schedule Scrap Pickup</span>
                 <ArrowRight className="h-4 w-4" />
@@ -106,7 +107,7 @@ export default function LandingHero() {
 
               <button
                 onClick={() => setCurrentView('estimator')}
-                className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-gradient-to-r from-emerald-50 to-teal-50 px-5 py-3 text-xs sm:text-sm font-bold text-emerald-950 transition hover:bg-emerald-100 shadow-2xs active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-gradient-to-r from-emerald-50 to-teal-50 px-5 py-3 text-xs sm:text-sm font-bold text-emerald-950 transition hover:bg-emerald-100 shadow-2xs active:scale-[0.98]"
               >
                 <Sparkles className="h-4 w-4 text-emerald-700" />
                 <span>AI E-Waste Estimator</span>
@@ -114,25 +115,26 @@ export default function LandingHero() {
 
               <button
                 onClick={() => setIsRateModalOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white/90 px-5 py-3 text-xs sm:text-sm font-bold text-slate-700 transition hover:bg-slate-50 hover:border-slate-400 shadow-2xs"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/90 px-5 py-3 text-xs sm:text-sm font-bold text-slate-700 transition hover:bg-slate-50 hover:border-slate-400 shadow-2xs"
               >
                 <Scale className="h-4 w-4 text-emerald-700" />
                 <span>View Daily Rate Index</span>
               </button>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs font-semibold text-slate-700">
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200/80 bg-white/90 px-3 py-1.5 shadow-2xs">
-                <span className="h-2 w-2 rounded-full bg-emerald-600"></span>
-                Calibrated Bluetooth Scale
+            {/* Badges - clean wrap without cutoff */}
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-2 sm:gap-2.5 text-[11px] sm:text-xs font-semibold text-slate-700">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200/80 bg-white/90 px-2.5 sm:px-3 py-1.5 shadow-2xs">
+                <span className="h-2 w-2 rounded-full bg-emerald-600 shrink-0"></span>
+                <span>Calibrated Bluetooth Scale</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200/80 bg-white/90 px-3 py-1.5 shadow-2xs">
-                <span className="h-2 w-2 rounded-full bg-teal-600"></span>
-                Instant UPI Payout
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200/80 bg-white/90 px-2.5 sm:px-3 py-1.5 shadow-2xs">
+                <span className="h-2 w-2 rounded-full bg-teal-600 shrink-0"></span>
+                <span>Instant UPI Payout</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-sky-200/80 bg-white/90 px-3 py-1.5 shadow-2xs">
-                <span className="h-2 w-2 rounded-full bg-sky-600"></span>
-                Automated EPR Certification
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-sky-200/80 bg-white/90 px-2.5 sm:px-3 py-1.5 shadow-2xs">
+                <span className="h-2 w-2 rounded-full bg-sky-600 shrink-0"></span>
+                <span>Automated EPR Certification</span>
               </span>
             </div>
           </div>
@@ -192,22 +194,22 @@ export default function LandingHero() {
         </div>
 
         {/* Platform Standards & Capabilities (4 Distinct Colored Stat Cards) */}
-        <div className="relative z-10 mt-10 pt-6 border-t border-emerald-100/90 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div className="p-4 bg-gradient-to-br from-white to-sky-50/80 rounded-xl border border-sky-200/80 shadow-2xs">
-            <span className="text-sm font-extrabold text-sky-950 block">±0.05 kg Precision</span>
-            <span className="text-[11px] text-sky-700 font-medium">Calibrated Digital Scale</span>
+        <div className="relative z-10 mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-emerald-100/90 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
+          <div className="p-3 sm:p-4 bg-gradient-to-br from-white to-sky-50/80 rounded-xl border border-sky-200/80 shadow-2xs">
+            <span className="text-xs sm:text-sm font-extrabold text-sky-950 block">±0.05 kg Precision</span>
+            <span className="text-[10px] sm:text-[11px] text-sky-700 font-medium">Calibrated Digital Scale</span>
           </div>
-          <div className="p-4 bg-gradient-to-br from-white to-emerald-50/90 rounded-xl border border-emerald-200/80 shadow-2xs">
-            <span className="text-sm font-extrabold text-emerald-950 block">Direct UPI</span>
-            <span className="text-[11px] text-emerald-700 font-medium">Instant Spot Disbursement</span>
+          <div className="p-3 sm:p-4 bg-gradient-to-br from-white to-emerald-50/90 rounded-xl border border-emerald-200/80 shadow-2xs">
+            <span className="text-xs sm:text-sm font-extrabold text-emerald-950 block">Direct UPI</span>
+            <span className="text-[10px] sm:text-[11px] text-emerald-700 font-medium">Instant Disbursement</span>
           </div>
-          <div className="p-4 bg-gradient-to-br from-white to-amber-50/80 rounded-xl border border-amber-200/80 shadow-2xs">
-            <span className="text-sm font-extrabold text-amber-950 block">Transparent Rates</span>
-            <span className="text-[11px] text-amber-700 font-medium">Zero Hidden Deductions</span>
+          <div className="p-3 sm:p-4 bg-gradient-to-br from-white to-amber-50/80 rounded-xl border border-amber-200/80 shadow-2xs">
+            <span className="text-xs sm:text-sm font-extrabold text-amber-950 block">Transparent Rates</span>
+            <span className="text-[10px] sm:text-[11px] text-amber-700 font-medium">Zero Deductions</span>
           </div>
-          <div className="p-4 bg-gradient-to-br from-white to-teal-50/80 rounded-xl border border-teal-200/80 shadow-2xs">
-            <span className="text-sm font-extrabold text-teal-950 block">CPCB Authorized</span>
-            <span className="text-[11px] text-teal-700 font-medium">E-Waste Rules 2022</span>
+          <div className="p-3 sm:p-4 bg-gradient-to-br from-white to-teal-50/80 rounded-xl border border-teal-200/80 shadow-2xs">
+            <span className="text-xs sm:text-sm font-extrabold text-teal-950 block">CPCB Authorized</span>
+            <span className="text-[10px] sm:text-[11px] text-teal-700 font-medium">E-Waste Rules 2022</span>
           </div>
         </div>
       </section>

@@ -132,23 +132,23 @@ export default function Navbar() {
             </nav>
 
             {/* Right Header Actions */}
-            <div className="flex items-center gap-2.5">
+            {/* Right Header Actions */}
+            <div className="flex items-center gap-2 sm:gap-2.5">
               
-              {/* Scrap Rates button */}
+              {/* Scrap Rates button - tablet & desktop only to preserve mobile breathing room */}
               <button
                 onClick={() => setIsRateModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-200/80 bg-emerald-50/60 hover:bg-emerald-100/70 text-emerald-900 text-xs font-semibold transition shadow-2xs"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-200/80 bg-emerald-50/60 hover:bg-emerald-100/70 text-emerald-900 text-xs font-semibold transition shadow-2xs"
               >
                 <Scale className="w-4 h-4 text-emerald-700" />
-                <span className="hidden sm:inline">Check Rates</span>
-                <span className="sm:hidden">Rates</span>
+                <span>Check Rates</span>
               </button>
 
               {/* Reset state simulation tool */}
               <button
                 onClick={resetDemoData}
                 title="Reset simulation data to default"
-                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 text-xs transition hidden sm:block"
+                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 text-xs transition hidden lg:block"
                 aria-label="Reset simulation data"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -221,17 +221,18 @@ export default function Navbar() {
                 /* Unauthenticated Sign In Button */
                 <button
                   onClick={() => openAuth('citizen')}
-                  className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl shadow-sm shadow-emerald-700/25 transition active:scale-[0.98]"
+                  className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2 text-xs font-bold bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl shadow-sm shadow-emerald-700/25 transition active:scale-[0.98] whitespace-nowrap shrink-0"
                 >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>Login / Choose View</span>
+                  <LogIn className="w-3.5 h-3.5 shrink-0" />
+                  <span className="hidden sm:inline">Login / Choose View</span>
+                  <span className="sm:hidden">Login</span>
                 </button>
               )}
 
               {/* Mobile menu trigger - synchronized with md:hidden */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 md:hidden rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition"
+                className="p-2 md:hidden rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition shrink-0"
                 aria-label="Toggle mobile menu"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
