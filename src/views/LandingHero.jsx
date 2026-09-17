@@ -158,12 +158,12 @@ export default function LandingHero() {
 
                 <div className="mt-4 grid grid-cols-2 gap-2.5 pt-3 border-t border-slate-100 text-xs">
                   <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-200/80">
-                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Batch Identity</span>
-                    <span className="font-mono font-bold text-slate-900">LOT-EW-204</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Chain of Custody</span>
+                    <span className="font-semibold text-slate-900">Digital QR Tracking</span>
                   </div>
                   <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-200/80">
-                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Downstream Status</span>
-                    <span className="font-bold text-emerald-800">Ready for Smelter</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Regulatory Standard</span>
+                    <span className="font-bold text-emerald-800">CPCB Certified Flow</span>
                   </div>
                 </div>
               </div>
@@ -171,23 +171,23 @@ export default function LandingHero() {
           </div>
         </div>
 
-        {/* Trust & Metric Strip */}
+        {/* Platform Standards & Capabilities */}
         <div className="mt-10 pt-6 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70">
-            <span className="font-mono text-xl font-bold text-slate-900 block">100%</span>
-            <span className="text-[11px] text-slate-500 font-medium">Digital Scale Accuracy</span>
+            <span className="text-sm font-bold text-slate-900 block">±0.05 kg Precision</span>
+            <span className="text-[11px] text-slate-500 font-medium">Calibrated Digital Scale</span>
           </div>
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70">
-            <span className="font-mono text-xl font-bold text-slate-900 block">50,000+ kg</span>
-            <span className="text-[11px] text-slate-500 font-medium">E-Waste Diverted</span>
+            <span className="text-sm font-bold text-emerald-800 block">Direct UPI</span>
+            <span className="text-[11px] text-slate-500 font-medium">Instant Spot Disbursement</span>
           </div>
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70">
-            <span className="font-mono text-xl font-bold text-slate-900 block">Rs. 0</span>
-            <span className="text-[11px] text-slate-500 font-medium">Hidden Deduction</span>
+            <span className="text-sm font-bold text-slate-900 block">Transparent Rates</span>
+            <span className="text-[11px] text-slate-500 font-medium">Zero Hidden Deductions</span>
           </div>
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70">
-            <span className="font-mono text-xl font-bold text-slate-900 block">1,840+</span>
-            <span className="text-[11px] text-slate-500 font-medium">CPCB EPR Credits</span>
+            <span className="text-sm font-bold text-emerald-800 block">CPCB Authorized</span>
+            <span className="text-[11px] text-slate-500 font-medium">E-Waste Rules 2022</span>
           </div>
         </div>
       </section>
