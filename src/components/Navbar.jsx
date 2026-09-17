@@ -27,6 +27,7 @@ export default function Navbar() {
     openAuth,
     logout,
     currentUser,
+    currentView,
     setCurrentView,
     resetDemoData,
     notification,
