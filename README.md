@@ -275,4 +275,5 @@ Accepts an image file, runs quadrant-tiled YOLOv8 detection, and returns item co
 ## 👥 Contributors
 Developed for **Smart India Hackathon (SIH)** & Circular Economy Initiatives.
 * **Platform**: SCRAPIT / Kabadiwala Connect
-* **License**: MIT License
+
+
