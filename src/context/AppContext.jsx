@@ -144,25 +144,44 @@ export function AppProvider({ children }) {
     safeStorage.setJSON('kc_user_profiles', customUserProfiles);
   }, [customUserProfiles]);
 
+  // Find any logged-in user name across profiles as fallback
+  const fallbackCustomName = customUserProfiles.citizen?.name || customUserProfiles.kabadiwala?.name || customUserProfiles.recycler?.name || '';
+
   // Compute active user from base role + custom real credentials
   const baseUser = MOCK_USERS[currentRole] || MOCK_USERS.citizen;
   const roleCustom = customUserProfiles[currentRole] || {};
+  const resolvedDisplayName = roleCustom.name || fallbackCustomName || baseUser.name || (
+    currentRole === 'citizen' ? 'Citizen' : currentRole === 'kabadiwala' ? 'Aggregator Hub' : 'Industrial Recycler'
+  );
+
   const activeUser = {
     ...baseUser,
     ...roleCustom,
-    name: roleCustom.name || baseUser.name,
-    businessName: roleCustom.businessName || baseUser.businessName || `${roleCustom.name || baseUser.name} Scrap Hub`,
-    companyName: roleCustom.companyName || baseUser.companyName || `${roleCustom.name || baseUser.name} Eco Recyclers`,
+    name: resolvedDisplayName,
+    businessName: roleCustom.businessName || (fallbackCustomName ? `${fallbackCustomName} Scrap Hub` : baseUser.businessName) || `${resolvedDisplayName} Scrap Hub`,
+    companyName: roleCustom.companyName || (fallbackCustomName ? `${fallbackCustomName} Eco-Smelters Ltd` : baseUser.companyName) || `${resolvedDisplayName} Eco Recyclers Ltd`,
     phone: roleCustom.phone || baseUser.phone,
     email: roleCustom.email || baseUser.email
   };
 
   // Switch Active Stakeholder Role
   const switchRole = (newRole) => {
+    setIsAuthenticated(true);
     setCurrentRole(newRole);
     setCurrentView('portal');
-    const targetName = customUserProfiles[newRole]?.name || MOCK_USERS[newRole].name;
-    showToast(`Switched workspace to ${MOCK_USERS[newRole].roleTitle} (${targetName})`);
+    safeStorage.setItem('kc_role', newRole);
+    safeStorage.setItem('kc_auth', 'true');
+    
+    const roleLabels = {
+      citizen: 'Citizen Portal',
+      kabadiwala: 'Kabadiwala Hub',
+      recycler: 'Industrial Recycler'
+    };
+    
+    const targetName = customUserProfiles[newRole]?.name || fallbackCustomName || (
+      newRole === 'citizen' ? 'Citizen' : newRole === 'kabadiwala' ? 'Aggregator Hub' : 'Industrial Recycler'
+    );
+    showToast(`Switched workspace to ${roleLabels[newRole] || newRole} (${targetName})`, 'success');
   };
 
   // Open Auth Page directly with a specific role

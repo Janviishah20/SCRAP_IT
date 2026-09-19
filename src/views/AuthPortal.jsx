@@ -23,7 +23,9 @@ export default function AuthPortal() {
     setAuthRole, 
     login, 
     setCurrentView,
-    customUserProfiles
+    customUserProfiles,
+    isAuthenticated,
+    switchRole
   } = useApp();
 
   const [selectedRole, setSelectedRole] = useState(authRole || 'citizen');
@@ -118,7 +120,7 @@ export default function AuthPortal() {
     <div className="min-h-[85vh] flex flex-col justify-center py-6 sm:py-10 px-4 sm:px-6 lg:px-8 bg-slate-50">
       
       {/* Top back navigation */}
-      <div className="max-w-md w-full mx-auto mb-4">
+      <div className="max-w-md w-full mx-auto mb-4 flex items-center justify-between">
         <button
           onClick={() => setCurrentView('landing')}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
@@ -126,6 +128,15 @@ export default function AuthPortal() {
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Landing Page</span>
         </button>
+        {isAuthenticated && (
+          <button
+            onClick={() => setCurrentView('portal')}
+            className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 transition"
+          >
+            <span>Active Dashboard</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
 
       <div className="max-w-md w-full mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
@@ -275,6 +286,21 @@ export default function AuthPortal() {
             <ArrowRight className="w-4 h-4" />
           </button>
 
+          {/* Quick Demo Instant Access */}
+          <div className="relative flex py-1 items-center">
+            <div className="flex-grow border-t border-slate-200"></div>
+            <span className="flex-shrink mx-2 text-[10px] uppercase font-bold text-slate-400">or instant preview</span>
+            <div className="flex-grow border-t border-slate-200"></div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => switchRole(selectedRole)}
+            className="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 font-bold text-xs rounded-xl shadow-2xs transition flex items-center justify-center gap-2 active:scale-[0.99]"
+          >
+            <Sparkles className="w-4 h-4 text-emerald-700" />
+            <span>Instant Switch to {activeRoleConfig.title} (Skip Form)</span>
+          </button>
         </form>
 
         {/* Security & Compliance Footer */}

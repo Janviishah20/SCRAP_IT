@@ -81,8 +81,8 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Solid Clean Header */}
-      <header className="w-full bg-white/95 backdrop-blur-md border-b border-emerald-100/80 shadow-xs">
+      {/* Solid Clean Header with Top Stacking Context */}
+      <header className="relative z-[100] w-full bg-white/95 backdrop-blur-md border-b border-emerald-100/80 shadow-xs">
         {/* Multi-tone Accent Line */}
         <div className="h-1 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,7 +91,7 @@ export default function Navbar() {
             {/* Logo */}
             <div 
               onClick={() => setCurrentView('landing')}
-              className="flex items-center gap-3 cursor-pointer select-none"
+              className="flex items-center gap-3 cursor-pointer select-none shrink-0"
             >
               <BrandLogo size="md" />
               <div>
@@ -105,7 +105,7 @@ export default function Navbar() {
             </div>
 
             {/* Middle Nav: Clean Universal Navigation Links */}
-            <nav className="hidden md:flex items-center gap-2 text-xs font-semibold text-slate-600">
+            <nav className="hidden lg:flex items-center gap-2 text-xs font-semibold text-slate-600">
               <button 
                 onClick={() => setCurrentView('landing')} 
                 className={`px-3 py-1.5 rounded-lg transition-all ${
@@ -142,7 +142,7 @@ export default function Navbar() {
                       : 'hover:text-emerald-800 hover:bg-slate-100/70'
                   }`}
                 >
-                  <span>My Portal Dashboard</span>
+                  <span>My Dashboard</span>
                 </button>
               )}
               <button 
@@ -156,56 +156,57 @@ export default function Navbar() {
             {/* Right Header Actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
               
-              {/* Quick Portal Switcher Bar - 1-click view switching right in header */}
+              {/* Quick Portal Switcher Bar - 1-click view switching right in header (Visible on MD and up) */}
               {isAuthenticated && (
-                <div className="hidden lg:flex items-center bg-slate-100/90 p-1 rounded-xl border border-slate-200/90 text-xs font-semibold shadow-2xs">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 px-2 select-none tracking-wider">
+                <div className="hidden md:flex items-center bg-slate-100/90 p-1 rounded-xl border border-slate-200/90 text-xs font-semibold shadow-2xs">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 px-2 select-none tracking-wider hidden xl:inline">
                     Portal:
                   </span>
                   <button
+                    type="button"
                     onClick={() => switchRole('citizen')}
-                    title="Switch to Citizen Portal"
+                    title="Switch to Citizen Portal (Household scrap & pickups)"
                     className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
                       currentRole === 'citizen' && currentView === 'portal'
-                        ? 'bg-white text-emerald-950 font-bold shadow-xs border border-emerald-300'
+                        ? 'bg-emerald-600 text-white font-bold shadow-xs'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                     }`}
                   >
-                    <span className={`w-2 h-2 rounded-full ${currentRole === 'citizen' && currentView === 'portal' ? 'bg-emerald-600 animate-pulse' : 'bg-slate-300'}`}></span>
-                    <User className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>Citizen</span>
+                    <User className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Citizen</span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => switchRole('kabadiwala')}
                     title="Switch to Kabadiwala Aggregator Hub"
                     className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
                       currentRole === 'kabadiwala' && currentView === 'portal'
-                        ? 'bg-white text-amber-950 font-bold shadow-xs border border-amber-300'
+                        ? 'bg-amber-600 text-white font-bold shadow-xs'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                     }`}
                   >
-                    <span className={`w-2 h-2 rounded-full ${currentRole === 'kabadiwala' && currentView === 'portal' ? 'bg-amber-600 animate-pulse' : 'bg-slate-300'}`}></span>
-                    <Truck className="w-3.5 h-3.5 text-amber-700" />
-                    <span>Kabadiwala</span>
+                    <Truck className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Kabadiwala</span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => switchRole('recycler')}
                     title="Switch to Industrial Recycler Portal"
                     className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
                       currentRole === 'recycler' && currentView === 'portal'
-                        ? 'bg-white text-indigo-950 font-bold shadow-xs border border-indigo-300'
+                        ? 'bg-indigo-600 text-white font-bold shadow-xs'
                         : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                     }`}
                   >
-                    <span className={`w-2 h-2 rounded-full ${currentRole === 'recycler' && currentView === 'portal' ? 'bg-indigo-600 animate-pulse' : 'bg-slate-300'}`}></span>
-                    <Factory className="w-3.5 h-3.5 text-indigo-700" />
-                    <span>Recycler</span>
+                    <Factory className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Recycler</span>
                   </button>
                 </div>
               )}
 
               {/* Scrap Rates button - tablet & desktop only to preserve mobile breathing room */}
               <button
+                type="button"
                 onClick={() => setIsRateModalOpen(true)}
                 className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-200/80 bg-emerald-50/60 hover:bg-emerald-100/70 text-emerald-900 text-xs font-semibold transition shadow-2xs"
               >
@@ -215,6 +216,7 @@ export default function Navbar() {
 
               {/* Reset state simulation tool */}
               <button
+                type="button"
                 onClick={resetDemoData}
                 title="Reset simulation data to default"
                 className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 text-xs transition hidden lg:block"
@@ -227,27 +229,36 @@ export default function Navbar() {
                 /* Authenticated User Menu Dropdown */
                 <div className="relative" ref={dropdownRef}>
                   <button
+                    type="button"
                     onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                    className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition text-xs select-none"
+                    className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition text-xs select-none shadow-2xs"
                     aria-expanded={profileDropdownOpen}
                     aria-haspopup="true"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+                    <div className={`w-7 h-7 rounded-lg text-white font-bold flex items-center justify-center text-xs shadow-2xs ${
+                      currentRole === 'citizen' ? 'bg-emerald-700' :
+                      currentRole === 'kabadiwala' ? 'bg-amber-600' :
+                      'bg-indigo-700'
+                    }`}>
                       {currentUser?.name ? currentUser.name[0].toUpperCase() : 'U'}
                     </div>
                     <div className="text-left hidden md:block">
                       <span className="font-bold text-slate-900 block leading-tight truncate max-w-[120px]">
                         {currentUser?.name || 'Account'}
                       </span>
-                      <span className="text-[10px] text-emerald-800 uppercase font-semibold">
-                        {currentRole} Portal
+                      <span className={`text-[10px] uppercase font-bold ${
+                        currentRole === 'citizen' ? 'text-emerald-800' :
+                        currentRole === 'kabadiwala' ? 'text-amber-800' :
+                        'text-indigo-800'
+                      }`}>
+                        {currentRole === 'citizen' ? 'Citizen' : currentRole === 'kabadiwala' ? 'Kabadiwala' : 'Recycler'} Portal
                       </span>
                     </div>
                     <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {profileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl border border-slate-200/90 shadow-2xl py-3 z-[120] text-xs divide-y divide-slate-100 animate-fadeIn">
+                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl border border-slate-200 shadow-2xl py-3 z-[150] text-xs divide-y divide-slate-100 animate-fadeIn pointer-events-auto">
                       {/* Active Workspace Header */}
                       <div className="px-4 pb-2.5">
                         <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
@@ -257,8 +268,12 @@ export default function Navbar() {
                           <span className="font-extrabold text-slate-900 truncate text-sm">
                             {currentUser?.name || currentUser?.businessName}
                           </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 capitalize border border-emerald-200">
-                            {currentRole}
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize border ${
+                            currentRole === 'citizen' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+                            currentRole === 'kabadiwala' ? 'bg-amber-100 text-amber-800 border-amber-200' :
+                            'bg-indigo-100 text-indigo-800 border-indigo-200'
+                          }`}>
+                            {currentRole === 'citizen' ? 'Citizen' : currentRole === 'kabadiwala' ? 'Kabadiwala Hub' : 'Industrial Recycler'}
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 truncate mt-0.5">
