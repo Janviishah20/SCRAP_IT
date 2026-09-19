@@ -122,24 +122,9 @@ export function AppProvider({ children }) {
     safeStorage.setJSON('kc_kabadiwala_inv', kabadiwalaInventory);
   }, [kabadiwalaInventory]);
 
-  // Dynamic Document Title based on active context (Item #34: Fix page titles)
+  // Dynamic Document Title set to SCRAPIT so tab always displays SCRAPIT
   useEffect(() => {
-    if (currentView === 'landing') {
-      document.title = 'SCRAPIT | Verified Doorstep Scrap & Circular E-Waste Platform';
-    } else if (currentView === 'estimator') {
-      document.title = 'AI E-Waste Weight & Payout Estimator | SCRAPIT';
-    } else if (currentView === 'auth') {
-      document.title = 'Sign In | SCRAPIT';
-    } else if (currentView === 'not_found') {
-      document.title = '404 - Page Not Found | SCRAPIT';
-    } else {
-      const titles = {
-        citizen: 'Citizen Portal | SCRAPIT',
-        kabadiwala: 'Collector Partner Hub | SCRAPIT',
-        recycler: 'Authorized Recycler B2B Exchange | SCRAPIT'
-      };
-      document.title = titles[currentRole] || 'SCRAPIT';
-    }
+    document.title = 'SCRAPIT ';
   }, [currentView, currentRole]);
 
   // Toast Helper

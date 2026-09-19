@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import BrandLogo from './BrandLogo';
 import { 
-  Recycle, 
   Scale, 
   User, 
   Truck, 
@@ -69,9 +69,7 @@ export default function Navbar() {
               onClick={() => setCurrentView('landing')}
               className="flex items-center gap-3 cursor-pointer select-none"
             >
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-sm shadow-emerald-700/25">
-                <Recycle className="w-5 h-5" />
-              </div>
+              <BrandLogo size="md" />
               <div>
                 <span className="text-base sm:text-lg font-extrabold tracking-tight text-slate-950">
                   SCRAP<span className="text-emerald-700">IT</span>

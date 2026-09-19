@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import BrandLogo from '../components/BrandLogo';
 import { 
-  Recycle, 
   User, 
   Truck, 
   Factory, 
@@ -132,9 +132,7 @@ export default function AuthPortal() {
         
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-700 text-white shadow-xs mb-1">
-            <Recycle className="w-6 h-6" />
-          </div>
+          <BrandLogo size="lg" className="mx-auto mb-1" />
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
             Sign In to Portal
           </h1>

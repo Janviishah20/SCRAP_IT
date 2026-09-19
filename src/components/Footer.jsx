@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Recycle, ShieldCheck, Scale, Leaf, ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
+import BrandLogo from './BrandLogo';
+import { ShieldCheck, Scale, Leaf, ArrowUpRight, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   const { openAuth, setIsRateModalOpen, openLegalModal } = useApp();
@@ -14,9 +15,7 @@ export default function Footer() {
           {/* Col 1: Brand & Purpose */}
           <div className="space-y-3 md:col-span-1">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold shadow-xs">
-                <Recycle className="w-4 h-4" />
-              </div>
+              <BrandLogo size="sm" />
               <span className="text-base font-extrabold text-slate-900 tracking-tight">
                 SCRAP<span className="text-emerald-700">IT</span>
               </span>

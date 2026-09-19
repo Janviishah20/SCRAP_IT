@@ -1,8 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#047857"/>
-  <path d="M16 6L23 10V22L16 26L9 22V10L16 6Z" stroke="#ECFDF5" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M16 11V21" stroke="#ECFDF5" stroke-width="2" stroke-linecap="round"/>
-  <path d="M11 14L16 11L21 14" stroke="#A7F3D0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="11" cy="18" r="2" fill="#A7F3D0"/>
-  <circle cx="21" cy="18" r="2" fill="#A7F3D0"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none">
+  <defs>
+    <linearGradient id="scrapitFaviconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="scrapitLeafGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded badge -->
+  <rect width="36" height="36" rx="9" fill="url(#scrapitFaviconGrad)"/>
+
+  <!-- Top Loop: Circular arrow forming top of 'S' -->
+  <path d="M26 14C24.5 10 20.5 7.5 16 7.5C10.8 7.5 6.5 11.8 6.5 17C6.5 18.2 6.7 19.3 7.2 20.3" stroke="#FFFFFF" stroke-width="2.75" stroke-linecap="round"/>
+  <path d="M23 16L27 13.5L25 9.5" stroke="#FFFFFF" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Bottom Loop: Circular arrow forming bottom of 'S' -->
+  <path d="M10 22C11.5 26 15.5 28.5 20 28.5C25.2 28.5 29.5 24.2 29.5 19C29.5 17.8 29.3 16.7 28.8 15.7" stroke="#FFFFFF" stroke-width="2.75" stroke-linecap="round"/>
+  <path d="M13 20L9 22.5L11 26.5" stroke="#FFFFFF" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Central Leaf / Tech Core -->
+  <path d="M14 18C14 14.5 18 14 20 12C20 15.5 16 16 14 18Z" fill="url(#scrapitLeafGlow)"/>
+  <path d="M22 18C22 21.5 18 22 16 24C16 20.5 20 20 22 18Z" fill="url(#scrapitLeafGlow)"/>
+  <circle cx="18" cy="18" r="1.75" fill="#FFFFFF"/>
 </svg>
