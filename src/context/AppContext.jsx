@@ -124,7 +124,7 @@ export function AppProvider({ children }) {
 
   // Dynamic Document Title set to SCRAPIT so tab always displays SCRAPIT
   useEffect(() => {
-    document.title = 'SCRAPIT ';
+    document.title = 'SCRAPIT';
   }, [currentView, currentRole]);
 
   // Toast Helper
