@@ -17,7 +17,7 @@ import { useApp } from '../context/AppContext';
 
 const journey = [
   { number: '01', title: 'Household', text: 'Upload scrap photo and schedule doorstep pickup.', icon: Users },
-  { number: '02', title: 'Kabadiwala', text: 'Weigh items on calibrated IoT digital scale and settle via UPI.', icon: Truck },
+  { number: '02', title: 'Kabadiwala', text: 'Weigh items on calibrated IoT digital scale with transparent receipts.', icon: Truck },
   { number: '03', title: 'Digital Lot', text: 'Bundle e-waste with verified QR batch identifier.', icon: QrCode },
   { number: '04', title: 'Recycler', text: 'Procure verified lots with estimated metal yield data.', icon: Factory },
   { number: '05', title: 'Smelting', text: 'Refine precious metals under CPCB non-toxic protocols.', icon: ShieldCheck },
@@ -130,7 +130,7 @@ export default function LandingHero() {
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200/80 bg-white/90 px-2.5 sm:px-3 py-1.5 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-teal-600 shrink-0"></span>
-                <span>Instant UPI Payout</span>
+                <span>Transparent Digital Receipts</span>
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-lg border border-sky-200/80 bg-white/90 px-2.5 sm:px-3 py-1.5 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-sky-600 shrink-0"></span>
@@ -200,8 +200,8 @@ export default function LandingHero() {
             <span className="text-[10px] sm:text-[11px] text-sky-700 font-medium">Calibrated Digital Scale</span>
           </div>
           <div className="p-3 sm:p-4 bg-gradient-to-br from-white to-emerald-50/90 rounded-xl border border-emerald-200/80 shadow-2xs">
-            <span className="text-xs sm:text-sm font-extrabold text-emerald-950 block">Direct UPI</span>
-            <span className="text-[10px] sm:text-[11px] text-emerald-700 font-medium">Instant Disbursement</span>
+            <span className="text-xs sm:text-sm font-extrabold text-emerald-950 block">Digital Receipts</span>
+            <span className="text-[10px] sm:text-[11px] text-emerald-700 font-medium">Verified Weight Records</span>
           </div>
           <div className="p-3 sm:p-4 bg-gradient-to-br from-white to-amber-50/80 rounded-xl border border-amber-200/80 shadow-2xs">
             <span className="text-xs sm:text-sm font-extrabold text-amber-950 block">Transparent Rates</span>
@@ -229,8 +229,8 @@ export default function LandingHero() {
             icon={Users}
             number="01"
             title="Households & Citizens"
-            description="Book doorstep pickups, review instant vehicle allocation advice, and receive transparent UPI payment with digital weight slips."
-            bullets={['Photo-based scrap request', 'Calibrated digital weighing', 'Instant UPI disbursement']}
+            description="Book doorstep pickups, review instant vehicle allocation advice, and receive transparent itemized digital weight slips."
+            bullets={['Photo-based scrap request', 'Calibrated digital weighing', 'Itemized digital receipt']}
             button="Enter Household Portal"
             onClick={() => enter('citizen')}
             color="emerald"
