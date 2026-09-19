@@ -7,7 +7,7 @@ export default function PrivacyAndTermsModal({ isOpen, onClose, initialTab = 'pr
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 overflow-y-auto">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 overflow-y-auto">
       <div className="relative w-full max-w-3xl rounded-2xl border border-slate-200 bg-white shadow-xl overflow-hidden my-8">
         
         {/* Modal Header */}

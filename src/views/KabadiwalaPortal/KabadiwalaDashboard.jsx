@@ -499,7 +499,7 @@ export default function KabadiwalaDashboard() {
 
       {/* Expanded Photo Inspection Modal */}
       {selectedPhotoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 overflow-y-auto">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 overflow-y-auto">
           <div className="relative max-w-xl w-full bg-white rounded-2xl border border-slate-200 p-4 shadow-xl space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900">Scrap Pile Inspection Photo</span>

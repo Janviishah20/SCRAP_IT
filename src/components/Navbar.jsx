@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import BrandLogo from './BrandLogo';
 import { 
@@ -16,7 +16,9 @@ import {
   ShieldCheck,
   FileText,
   LogIn,
-  Sparkles
+  Sparkles,
+  LayoutDashboard,
+  Check
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -37,12 +39,35 @@ export default function Navbar() {
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close profile dropdown when clicking outside or pressing Escape
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setProfileDropdownOpen(false);
+      }
+    }
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setProfileDropdownOpen(false);
+      }
+    }
+    if (profileDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [profileDropdownOpen]);
 
   return (
     <>
       {/* Toast Notification Header */}
       {notification && (
-        <div className={`fixed top-4 right-4 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs font-semibold shadow-md ${
+        <div className={`fixed top-4 right-4 z-[300] flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs font-semibold shadow-md ${
           notification.type === 'info' 
             ? 'bg-slate-900 border-slate-800 text-white' 
             : 'bg-emerald-800 border-emerald-700 text-white'
@@ -56,11 +81,10 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Multi-tone Accent Line */}
-      <div className="h-1 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700"></div>
-
       {/* Solid Clean Header */}
-      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-emerald-100/80 shadow-xs">
+      <header className="w-full bg-white/95 backdrop-blur-md border-b border-emerald-100/80 shadow-xs">
+        {/* Multi-tone Accent Line */}
+        <div className="h-1 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             
@@ -130,9 +154,56 @@ export default function Navbar() {
             </nav>
 
             {/* Right Header Actions */}
-            {/* Right Header Actions */}
             <div className="flex items-center gap-2 sm:gap-2.5">
               
+              {/* Quick Portal Switcher Bar - 1-click view switching right in header */}
+              {isAuthenticated && (
+                <div className="hidden lg:flex items-center bg-slate-100/90 p-1 rounded-xl border border-slate-200/90 text-xs font-semibold shadow-2xs">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 px-2 select-none tracking-wider">
+                    Portal:
+                  </span>
+                  <button
+                    onClick={() => switchRole('citizen')}
+                    title="Switch to Citizen Portal"
+                    className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+                      currentRole === 'citizen' && currentView === 'portal'
+                        ? 'bg-white text-emerald-950 font-bold shadow-xs border border-emerald-300'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${currentRole === 'citizen' && currentView === 'portal' ? 'bg-emerald-600 animate-pulse' : 'bg-slate-300'}`}></span>
+                    <User className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Citizen</span>
+                  </button>
+                  <button
+                    onClick={() => switchRole('kabadiwala')}
+                    title="Switch to Kabadiwala Aggregator Hub"
+                    className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+                      currentRole === 'kabadiwala' && currentView === 'portal'
+                        ? 'bg-white text-amber-950 font-bold shadow-xs border border-amber-300'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${currentRole === 'kabadiwala' && currentView === 'portal' ? 'bg-amber-600 animate-pulse' : 'bg-slate-300'}`}></span>
+                    <Truck className="w-3.5 h-3.5 text-amber-700" />
+                    <span>Kabadiwala</span>
+                  </button>
+                  <button
+                    onClick={() => switchRole('recycler')}
+                    title="Switch to Industrial Recycler Portal"
+                    className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
+                      currentRole === 'recycler' && currentView === 'portal'
+                        ? 'bg-white text-indigo-950 font-bold shadow-xs border border-indigo-300'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${currentRole === 'recycler' && currentView === 'portal' ? 'bg-indigo-600 animate-pulse' : 'bg-slate-300'}`}></span>
+                    <Factory className="w-3.5 h-3.5 text-indigo-700" />
+                    <span>Recycler</span>
+                  </button>
+                </div>
+              )}
+
               {/* Scrap Rates button - tablet & desktop only to preserve mobile breathing room */}
               <button
                 onClick={() => setIsRateModalOpen(true)}
@@ -154,61 +225,182 @@ export default function Navbar() {
 
               {isAuthenticated ? (
                 /* Authenticated User Menu Dropdown */
-                <div className="relative">
+                <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                    className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition text-xs"
+                    className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition text-xs select-none"
+                    aria-expanded={profileDropdownOpen}
+                    aria-haspopup="true"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white font-bold flex items-center justify-center text-xs">
-                      {currentUser?.name ? currentUser.name[0] : 'U'}
+                    <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white font-bold flex items-center justify-center text-xs shadow-2xs">
+                      {currentUser?.name ? currentUser.name[0].toUpperCase() : 'U'}
                     </div>
                     <div className="text-left hidden md:block">
-                      <span className="font-bold text-slate-900 block leading-tight">
+                      <span className="font-bold text-slate-900 block leading-tight truncate max-w-[120px]">
                         {currentUser?.name || 'Account'}
                       </span>
                       <span className="text-[10px] text-emerald-800 uppercase font-semibold">
                         {currentRole} Portal
                       </span>
                     </div>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+                    <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {profileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl border border-slate-200 shadow-lg py-2 z-50 text-xs">
-                      <div className="px-4 py-2 border-b border-slate-100">
+                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl border border-slate-200/90 shadow-2xl py-3 z-[120] text-xs divide-y divide-slate-100 animate-fadeIn">
+                      {/* Active Workspace Header */}
+                      <div className="px-4 pb-2.5">
                         <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
                           Active Workspace
                         </span>
-                        <span className="font-bold text-slate-900 block truncate">
-                          {currentUser?.name || currentUser?.businessName}
-                        </span>
-                        <span className="text-[11px] text-emerald-800 capitalize font-medium">
-                          {currentRole} Portal Active
-                        </span>
+                        <div className="flex items-center justify-between mt-0.5">
+                          <span className="font-extrabold text-slate-900 truncate text-sm">
+                            {currentUser?.name || currentUser?.businessName}
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 capitalize border border-emerald-200">
+                            {currentRole}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                          {currentUser?.email || currentUser?.phone || `${currentRole} workspace`}
+                        </p>
                       </div>
 
-                      <div className="py-1">
+                      {/* Quick Portal Workspace Switcher Section */}
+                      <div className="p-2 space-y-1">
+                        <span className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1 block tracking-wider">
+                          Switch Portal View:
+                        </span>
+
+                        {/* Citizen Option */}
                         <button
                           onClick={() => {
+                            switchRole('citizen');
                             setProfileDropdownOpen(false);
-                            openAuth(currentRole);
                           }}
-                          className="w-full text-left px-4 py-2 text-slate-700 hover:bg-slate-50 flex items-center gap-2 font-medium"
+                          className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-all ${
+                            currentRole === 'citizen' && currentView === 'portal'
+                              ? 'bg-emerald-50 text-emerald-950 font-bold border border-emerald-200 shadow-2xs'
+                              : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                          }`}
                         >
-                          <LogIn className="w-3.5 h-3.5 text-emerald-700" />
-                          <span>Switch Portal / Choose View</span>
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                              <User className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <span className="block leading-tight font-bold">Citizen Portal</span>
+                              <span className="text-[10px] text-slate-500 font-normal">Household scrap & pickups</span>
+                            </div>
+                          </div>
+                          {currentRole === 'citizen' && currentView === 'portal' && (
+                            <span className="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">
+                              Active
+                            </span>
+                          )}
+                        </button>
+
+                        {/* Kabadiwala Option */}
+                        <button
+                          onClick={() => {
+                            switchRole('kabadiwala');
+                            setProfileDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-all ${
+                            currentRole === 'kabadiwala' && currentView === 'portal'
+                              ? 'bg-amber-50 text-amber-950 font-bold border border-amber-200 shadow-2xs'
+                              : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                              <Truck className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <span className="block leading-tight font-bold">Kabadiwala Hub</span>
+                              <span className="text-[10px] text-slate-500 font-normal">Aggregator hub & weighing</span>
+                            </div>
+                          </div>
+                          {currentRole === 'kabadiwala' && currentView === 'portal' && (
+                            <span className="text-[10px] bg-amber-600 text-white px-2 py-0.5 rounded-full font-bold">
+                              Active
+                            </span>
+                          )}
+                        </button>
+
+                        {/* Recycler Option */}
+                        <button
+                          onClick={() => {
+                            switchRole('recycler');
+                            setProfileDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-3 py-2 rounded-xl flex items-center justify-between transition-all ${
+                            currentRole === 'recycler' && currentView === 'portal'
+                              ? 'bg-indigo-50 text-indigo-950 font-bold border border-indigo-200 shadow-2xs'
+                              : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-800 flex items-center justify-center shrink-0">
+                              <Factory className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <span className="block leading-tight font-bold">Industrial Recycler</span>
+                              <span className="text-[10px] text-slate-500 font-normal">CPCB smelter & batch lots</span>
+                            </div>
+                          </div>
+                          {currentRole === 'recycler' && currentView === 'portal' && (
+                            <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold">
+                              Active
+                            </span>
+                          )}
                         </button>
                       </div>
 
-                      <div className="pt-1 border-t border-slate-100">
+                      {/* Quick Navigation Links */}
+                      <div className="py-1 px-2 space-y-0.5">
                         <button
                           onClick={() => {
+                            setCurrentView('portal');
                             setProfileDropdownOpen(false);
-                            logout();
                           }}
-                          className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 flex items-center gap-2 font-semibold"
+                          className="w-full text-left px-2.5 py-1.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg flex items-center gap-2 font-medium transition-colors"
                         >
-                          <LogOut className="w-3.5 h-3.5" />
+                          <LayoutDashboard className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>My Portal Dashboard</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setCurrentView('estimator');
+                            setProfileDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-2.5 py-1.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg flex items-center gap-2 font-medium transition-colors"
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>AI E-Waste Estimator</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            openAuth(currentRole);
+                            setProfileDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-2.5 py-1.5 text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg flex items-center gap-2 font-medium transition-colors"
+                        >
+                          <LogIn className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Switch Account / Full Login</span>
+                        </button>
+                      </div>
+
+                      {/* Sign Out */}
+                      <div className="pt-1.5 px-2">
+                        <button
+                          onClick={() => {
+                            logout();
+                            setProfileDropdownOpen(false);
+                          }}
+                          className="w-full text-left px-2.5 py-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 font-semibold transition-colors"
+                        >
+                          <LogOut className="w-3.5 h-3.5 text-red-500" />
                           <span>Sign Out</span>
                         </button>
                       </div>
@@ -282,11 +474,54 @@ export default function Navbar() {
                   </button>
                 )}
 
+                {isAuthenticated && (
+                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/90 space-y-1.5 my-1">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block tracking-wider">
+                      Quick Switch Active Portal:
+                    </span>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      <button
+                        onClick={() => { switchRole('citizen'); setMobileMenuOpen(false); }}
+                        className={`py-2 px-1 rounded-lg text-center font-bold text-xs flex flex-col items-center gap-1 transition ${
+                          currentRole === 'citizen' && currentView === 'portal'
+                            ? 'bg-emerald-700 text-white shadow-2xs'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+                        }`}
+                      >
+                        <User className="w-3.5 h-3.5" />
+                        <span>Citizen</span>
+                      </button>
+                      <button
+                        onClick={() => { switchRole('kabadiwala'); setMobileMenuOpen(false); }}
+                        className={`py-2 px-1 rounded-lg text-center font-bold text-xs flex flex-col items-center gap-1 transition ${
+                          currentRole === 'kabadiwala' && currentView === 'portal'
+                            ? 'bg-amber-700 text-white shadow-2xs'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+                        }`}
+                      >
+                        <Truck className="w-3.5 h-3.5" />
+                        <span>Kabadiwala</span>
+                      </button>
+                      <button
+                        onClick={() => { switchRole('recycler'); setMobileMenuOpen(false); }}
+                        className={`py-2 px-1 rounded-lg text-center font-bold text-xs flex flex-col items-center gap-1 transition ${
+                          currentRole === 'recycler' && currentView === 'portal'
+                            ? 'bg-indigo-700 text-white shadow-2xs'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+                        }`}
+                      >
+                        <Factory className="w-3.5 h-3.5" />
+                        <span>Recycler</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <button
                   onClick={() => { openAuth(currentRole || 'citizen'); setMobileMenuOpen(false); }}
-                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between font-bold transition"
+                  className="w-full text-left py-2.5 px-3 rounded-lg text-slate-700 hover:bg-slate-50 flex items-center justify-between font-medium transition"
                 >
-                  <span>Switch Portal / Choose View</span>
+                  <span>Switch Account / Full Login</span>
                   <LogIn className="w-3.5 h-3.5 text-emerald-700" />
                 </button>
                 <button

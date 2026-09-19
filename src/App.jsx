@@ -32,7 +32,7 @@ function MainLayout() {
   } = useApp();
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/90 text-slate-900 selection:bg-emerald-700 selection:text-white overflow-x-hidden relative">
+    <div className="min-h-screen flex flex-col bg-slate-50/90 text-slate-900 selection:bg-emerald-700 selection:text-white relative">
       {/* Subtle Ambient Color Glows behind content */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0 opacity-70">
         <div className="absolute -top-32 right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-emerald-200/30 to-teal-200/20 blur-3xl"></div>
@@ -40,13 +40,13 @@ function MainLayout() {
         <div className="absolute -bottom-40 right-[15%] w-[500px] h-[500px] rounded-full bg-gradient-to-tl from-emerald-200/25 to-amber-100/20 blur-3xl"></div>
       </div>
 
-      {/* Universal Clean Navbar */}
-      <div className="relative z-10">
+      {/* Universal Clean Navbar with top stacking priority */}
+      <div className="sticky top-0 z-[100] w-full">
         <Navbar />
       </div>
 
       {/* Main View Router */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8 relative z-10">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8 relative z-0">
         {currentView === 'auth' ? (
           <AuthPortal />
         ) : currentView === 'landing' ? (

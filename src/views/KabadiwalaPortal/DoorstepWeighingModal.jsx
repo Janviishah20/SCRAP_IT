@@ -59,7 +59,7 @@ export default function DoorstepWeighingModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 overflow-y-auto">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 overflow-y-auto">
       <div className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden my-8 text-slate-900">
         
         {/* Header with Digital Scale IoT status */}
